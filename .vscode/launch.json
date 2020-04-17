@@ -7,17 +7,17 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Electron",
-      "protocol": "inspector",
-      "preLaunchTask": "npm: package",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "runtimeArgs": [
-        "--remote-debugging-port=9223",
-        "."
-      ],
+      "name": "Electron Main",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-forge-vscode-nix",
       "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      }
-  },
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-forge-vscode-win.cmd"
+      },
+      // runtimeArgs will be passed directly to your Electron application
+      "runtimeArgs": [
+        "foo",
+        "bar"
+      ],
+      "cwd": "${workspaceFolder}"
+    },
   ]
 }
