@@ -1,8 +1,9 @@
 import React from 'react';
-import { NotePane } from './NotePane';
-
-const input = '# This is a header\n\nAnd __this__ is a paragraph'
+import { NotePage } from './NotePage';
+import './App.css';
 
 export default function App() {
-  return <NotePane rawMd={input} />
+  return <div className='App'>
+    <NotePage/>
+  </div>;
 }

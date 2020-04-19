@@ -1,0 +1,25 @@
+
+.NoteBlock {
+  cursor: cell;
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: auto;
+}
+
+.NoteBlock:hover {
+  background-color: grey;  
+} 
+
+.NoteBlock > * {
+
+}
+
+.NoteEditor {
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+}

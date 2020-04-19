@@ -1,6 +1,6 @@
 {
   "name": "notework",
-  "productName": "notework",
+  "productName": "Notework",
   "version": "1.0.0",
   "description": "Cloud synced notetaking software for Zettelkasten",
   "main": ".webpack/main",
