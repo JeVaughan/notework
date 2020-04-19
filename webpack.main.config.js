@@ -4,11 +4,13 @@ module.exports = {
    * that runs in the main process.
    */
   entry: './src/index.ts',
+
   // Put your normal webpack config below here
   module: {
     rules: require('./webpack.rules'),
   },
   resolve: {
+    alias: { "path": "path-browserify" },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
 };

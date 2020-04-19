@@ -10,8 +10,10 @@ module.exports = {
   module: {
     rules,
   },
+  target: 'web',
   plugins: plugins,
   resolve: {
+    alias: { "path": "path-browserify" },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css']
   },
 };
