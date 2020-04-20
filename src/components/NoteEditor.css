@@ -17,3 +17,9 @@
 .NoteBlock > * {
 
 }
+
+.NoteEditor {
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+}

@@ -1,33 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { NoteBlock } from "./NoteBlock";
 import './NotePage.css';
 
-const initialSource: string = `
-# Live demo
-Changes are automatically rendered as you type.
-## Table of Contents
-* Implements [GitHub Flavored Markdown](https://github.github.com/gfm/)
-* Renders actual, "native" React DOM elements
-* Allows you to escape or skip HTML (try toggling the checkboxes above)
-* If you escape or skip the HTML, no \`dangerouslySetInnerHTML\` is used! Yay!
-Pretty neat, eh?
-## Tables?
-|Feature   |Support |
-| --------- | ------- |
-| tables    | ✔ |
-| alignment | ✔ |
-| wewt      | ✔ |
-## More info?
-Read usage information and more on [GitHub](//github.com/rexxars/react-markdown)
----------------
-A component by [Espen Hovlandsdal](https://espen.codes/)
-`
+export type ParseBlocksResult = {
+  blocks: string[],
+  idxSelected: number,
+  newCaretPos: number,
+};
 
-export function NotePage() {
-  const [content, setContent] = useState(initialSource);
+export function parseBlocks(rawMd: string, caretPos: number = 0): ParseBlocksResult {
+
+  // TODO reimpliment with react-markdown?
+  const blocks: string[] = rawMd.split('\n#');
+  
+  // TODO remove Array.from
+  const index: [number, string][] = Array.from(blocks.entries());
+
+  for (const [idxSelected, str] of index) {
+    const newCaretPos = caretPos;
+    caretPos -= str.length;
+
+    if (caretPos < 0)
+      return { blocks, idxSelected, newCaretPos };
+  }
+
+  return { blocks, idxSelected: 0, newCaretPos: 0 };
+}
+
+
+export type NotePageProps = {
+  rawMd: string;  
+};
+
+export type NotePageState = {
+  blocks: string[],
+  idxSelected: number,
+  caretPos: number,
+};
+
+export function NotePage({ rawMd }: NotePageProps) {
+  const initialState = useMemo(
+    function() {
+      const { blocks, idxSelected, newCaretPos } = parseBlocks(rawMd)
+      const 
+
+      return { blocks, }
+    }, [ rawMd ]
+  );
+
+  const [blocks, setBlocks] = useState(initialSource);
+
+  function 
 
   return <div className='NotePage'>
-    <NoteBlock 
+    {<NoteBlock 
       rawMd={content} 
       onSave={setContent}
     />
