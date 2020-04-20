@@ -1,6 +1,9 @@
 import React, { useState, useMemo } from 'react';
+
 import { NoteBlock } from './NoteBlock';
 import { NoteEditor } from './NoteEditor';
+import { cyrb53 } from '../util/cyrb53';
+
 import './NotePage.css';
 
 export type NotePageProps = {
@@ -11,6 +14,15 @@ export function NotePage({ rawMd }: NotePageProps) {
   const [[prev, active, rem], setBlocks] 
     = useState([ rawMd.split('\n#'), null, [] ]);
  
+
+  const prevHashes: number[] = useMemo(
+    () => prev.map(str => cyrb53(str)), [ prev ]
+  );
+
+  const remHashes: number[] = useMemo(
+    () => rem.map(str => cyrb53(str)), [ rem ]
+  );
+
   const activeArr: string[] = useMemo(
     () => active ? [ active ] : [], [ active ]
   );
@@ -33,7 +45,11 @@ export function NotePage({ rawMd }: NotePageProps) {
               .concat(rem)
           ]);
         }
-        return <NoteBlock rawMd={val} onClick={onClick} />;
+        return <NoteBlock 
+          key={prevHashes[idx]}
+          rawMd={val} 
+          onClick={onClick}
+        />;
       }
     )}
     {active && <NoteEditor rawMd={active} onUpdate={onUpdate} />}
@@ -47,7 +63,11 @@ export function NotePage({ rawMd }: NotePageProps) {
             rem.slice(idx + 1)
           ]);
         }
-        return <NoteBlock rawMd={val} onClick={onClick} />;
+        return <NoteBlock 
+          key={remHashes[idx]}
+          rawMd={val} 
+          onClick={onClick}
+        />;
       }
     )}
     
