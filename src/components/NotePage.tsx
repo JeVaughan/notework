@@ -8,13 +8,13 @@ import './NotePage.css';
 
 export type NotePageProps = {
   rawMd: string;  
+  update?: (body?: string) => void,
 };
 
-export function NotePage({ rawMd }: NotePageProps) {
+export function NotePage({ rawMd, update }: NotePageProps) {
   const [[prev, active, rem], setBlocks] 
     = useState([ rawMd.split('\n#'), null, [] ]);
  
-
   const prevHashes: number[] = useMemo(
     () => prev.map(str => cyrb53(str)), [ prev ]
   );
@@ -28,9 +28,15 @@ export function NotePage({ rawMd }: NotePageProps) {
   );
 
   function onUpdate(updateMd?: string, navigate?: number) {
-    const newBlocks: string[] = updateMd.split('\n#');
-    const newActive = prev.pop();
-    setBlocks([ prev.concat(newBlocks), newActive, rem ]);
+    const newBlocks: string[] = prev.concat(updateMd.split('\n#'));
+
+    if (navigate) {
+      const newActive = newBlocks.pop();
+      setBlocks([ newBlocks, newActive, rem ]);
+
+    } else {
+      setBlocks([ newBlocks.concat(rem), null, [] ]);
+    }
   }
 
   return <div className='NotePage'>

@@ -1,9 +1,8 @@
-import React from 'react';
-import { NotePage } from './NotePage';
+import React, { useState } from 'react';
+import { Notebook } from './Notebook';
 import './App.css';
 
-const initialSource: string = `
-# Live demo
+const page1: string = `# Live demo
 Changes are automatically rendered as you type.
 ## Table of Contents
 * Implements [GitHub Flavored Markdown](https://github.github.com/gfm/)
@@ -21,10 +20,21 @@ Pretty neat, eh?
 Read usage information and more on [GitHub](//github.com/rexxars/react-markdown)
 ---------------
 A component by [Espen Hovlandsdal](https://espen.codes/)
-`
+`;
+
+const page2: string = `# page2
+this is another page dumbass
+`;
+
+const shortcuts: string[] = ['page1', 'page2'];
 
 export default function App() {
-  return <div className='App'>
-    <NotePage rawMd={initialSource} />
-  </div>;
+  const [notes, setNotes] = useState<Map<string, string>>(
+    new Map(Object.entries({ page1, page2 }))
+  );
+
+  return <Notebook 
+    shortcuts={shortcuts} 
+    notes={notes}
+  />;
 }
