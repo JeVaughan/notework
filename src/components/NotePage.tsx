@@ -39,23 +39,42 @@ export type NotePageState = {
 };
 
 export function NotePage({ rawMd }: NotePageProps) {
-  const initialState = useMemo(
-    function() {
-      const { blocks, idxSelected, newCaretPos } = parseBlocks(rawMd)
-      const 
-
-      return { blocks, }
-    }, [ rawMd ]
+  const [[prev, active, rem], setBlocks] 
+    = useState([ rawMd.split('\n#'), null, [] ]);
+ 
+  const activeArr: string[] = useMemo(
+    () => active ? [ active ] : [], [ active ]
   );
 
-  const [blocks, setBlocks] = useState(initialSource);
-
-  function 
-
   return <div className='NotePage'>
-    {<NoteBlock 
-      rawMd={content} 
-      onSave={setContent}
-    />
+    {prev.map(
+      function(val: string, idx: number) {
+        function onClick(newCaret?: number) {
+          setBlocks([
+            prev.slice(0, idx),
+            val,
+            prev.slice(idx + 1)
+              .concat(activeArr)
+              .concat(rem)
+          ]);
+        }
+        return <NoteBlock rawMd={val} onClick={onClick} />;
+      }
+    )}
+    <pre>{active}</pre>
+    {rem.map(
+      function(val: string, idx: number) {
+        function onClick(newCaret?: number) {
+          setBlocks([
+            prev.concat(activeArr)
+              .concat(rem.slice(0, idx)),
+            val,
+            rem.slice(idx + 1)
+          ]);
+        }
+        return <NoteBlock rawMd={val} onClick={onClick} />;
+      }
+    )}
+    
   </div>;
 }
