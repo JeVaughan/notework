@@ -1,41 +1,10 @@
-import React, { useState, useMemo } from "react";
-import { NoteBlock } from "./NoteBlock";
+import React, { useState, useMemo } from 'react';
+import { NoteBlock } from './NoteBlock';
+import { NoteEditor } from './NoteEditor';
 import './NotePage.css';
-
-export type ParseBlocksResult = {
-  blocks: string[],
-  idxSelected: number,
-  newCaretPos: number,
-};
-
-export function parseBlocks(rawMd: string, caretPos: number = 0): ParseBlocksResult {
-
-  // TODO reimpliment with react-markdown?
-  const blocks: string[] = rawMd.split('\n#');
-  
-  // TODO remove Array.from
-  const index: [number, string][] = Array.from(blocks.entries());
-
-  for (const [idxSelected, str] of index) {
-    const newCaretPos = caretPos;
-    caretPos -= str.length;
-
-    if (caretPos < 0)
-      return { blocks, idxSelected, newCaretPos };
-  }
-
-  return { blocks, idxSelected: 0, newCaretPos: 0 };
-}
-
 
 export type NotePageProps = {
   rawMd: string;  
-};
-
-export type NotePageState = {
-  blocks: string[],
-  idxSelected: number,
-  caretPos: number,
 };
 
 export function NotePage({ rawMd }: NotePageProps) {
@@ -45,6 +14,12 @@ export function NotePage({ rawMd }: NotePageProps) {
   const activeArr: string[] = useMemo(
     () => active ? [ active ] : [], [ active ]
   );
+
+  function onUpdate(updateMd?: string, navigate?: number) {
+    const newBlocks: string[] = updateMd.split('\n#');
+    const newActive = prev.pop();
+    setBlocks([ prev.concat(newBlocks), newActive, rem ]);
+  }
 
   return <div className='NotePage'>
     {prev.map(
@@ -61,7 +36,7 @@ export function NotePage({ rawMd }: NotePageProps) {
         return <NoteBlock rawMd={val} onClick={onClick} />;
       }
     )}
-    <pre>{active}</pre>
+    {active && <NoteEditor rawMd={active} onUpdate={onUpdate} />}
     {rem.map(
       function(val: string, idx: number) {
         function onClick(newCaret?: number) {

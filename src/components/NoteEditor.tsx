@@ -1,34 +1,22 @@
-import React, { useState, useEffect, useMemo, ChangeEvent, KeyboardEvent, useRef } from 'react';
+import React, { useState, useMemo, ChangeEvent, KeyboardEvent, useEffect } from 'react';
 
-import { NoteMd } from './NoteMd';
+import './NoteEditor.css';
 
-import './NoteBlock.css';
-
-export type UpdateParam = {
-  
-  // New markdown to replace the current content of this block.
-  mdUpdated?: string,
-
-  // The new caret position relative to the start of this block. 
-  newCaretPos?: number,
-};
-
-export type NoteBlockProps = {
+export type NoteEditorProps = {
   rawMd?: string,
-  onUpdate?: (param: UpdateParam) => void
+  onUpdate?: (updateMd?: string, navigate?: number) => void
 };
 
-export function NoteBlock({ rawMd, onUpdate }: NoteBlockProps) {
-  const input = useRef(null);
-  
-  const [mdUpdated, setMd] = useState<string>();
+function calcRows(text: string): number {
+  return 1 + Math.max(3, text.split('\n').length);
+}
 
-  function onClick() {
-    if (!mdUpdated) {
-      console.log('NotePane: started edit')
-      setMd(rawMd)
-    }
-  }
+export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
+  const [updateMd, setMd] = useState<string>(rawMd);
+
+  useEffect(() => setMd(rawMd), [ rawMd ]);
+
+  const rows = useMemo(() => calcRows(updateMd), [ updateMd ]);
 
   function onChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setMd(event.target.value);
@@ -38,13 +26,12 @@ export function NoteBlock({ rawMd, onUpdate }: NoteBlockProps) {
   function finishEdit(update: boolean = true) {
     console.log('NotePane: finishing edit, updating = %s', update);
 
-    setMd(undefined);
     if (update && onUpdate) 
-      onUpdate({ mdUpdated });
+      onUpdate(updateMd);
   }
-  
-  function onBlur(event: ChangeEvent<HTMLTextAreaElement>) {
-    finishEdit()
+
+  function onBlur(_: ChangeEvent<HTMLTextAreaElement>) {
+    // finishEdit();
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -57,21 +44,14 @@ export function NoteBlock({ rawMd, onUpdate }: NoteBlockProps) {
       event.stopPropagation();
     }
   }
-  
-  if (typeof mdUpdated === 'string') {
-    return <textarea 
-      ref={input}
-      className='NoteEditor'
-      defaultValue={rawMd}
-      onChange={onChange}
-      onBlur={onBlur}
-      onKeyDown={onKeyDown}
-      autoFocus
-    />;
 
-  } else {
-    return <div className='NoteBlock' onClick={onClick}>
-      <NoteMd rawMd={rawMd} />
-    </div>;
-  }
+  return <textarea
+    className='NoteEditor'
+    rows={rows}
+    value={updateMd}
+    onChange={onChange}
+    onBlur={onBlur}
+    onKeyDown={onKeyDown}
+    autoFocus
+  />;
 }
