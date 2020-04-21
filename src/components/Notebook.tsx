@@ -55,7 +55,7 @@ export function Notebook({ pinned, notes, update }: NotebookProps) {
 
       <hr/><span>Pinned</span>
       {pinned.map(
-        name => <button onClick={getOpenFn(name)}>
+        name => <button key={name} onClick={getOpenFn(name)}>
           {name}
         </button>
       )}
