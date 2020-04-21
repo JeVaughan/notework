@@ -13,4 +13,6 @@ module.exports = {
     alias: { "path": "path-browserify" },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json']
   },
+
+  watch: true,
 };
