@@ -26,7 +26,7 @@ const page2: string = `# page2
 this is another page dumbass
 `;
 
-const shortcuts: string[] = ['page1', 'page2'];
+const pinned: string[] = ['page1', 'page2'];
 
 export default function App() {
   const [notes, setNotes] = useState<Map<string, string>>(
@@ -34,7 +34,7 @@ export default function App() {
   );
 
   return <Notebook 
-    shortcuts={shortcuts} 
+    pinned={pinned} 
     notes={notes}
   />;
 }
