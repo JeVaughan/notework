@@ -1,0 +1,35 @@
+.awc-container {
+  display: flex; 
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 100%;
+}
+
+.awc-left {
+  flex-grow: 0;
+  flex-shrink: 0;
+  
+  min-width: 200px;
+  max-width: calc(80% - 2px);
+}
+
+.awc-bar {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 2px;
+  height: 100%;
+}
+
+.awc-grab {
+  cursor: ew-resize;
+  margin-left: -8px;
+  margin-right: -8px;
+  height: 100%;
+}
+
+.awc-right {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 10%;
+}

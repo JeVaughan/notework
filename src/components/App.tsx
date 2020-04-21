@@ -26,11 +26,19 @@ const page2: string = `# page2
 this is another page dumbass
 `;
 
-const pinned: string[] = ['page1', 'page2'];
+const page3: string = `some more stuff
+# Some examples
+**bold**
+
+__underline__
+
+[ ] checkbox`;
+
+const pinned: string[] = ['page1', 'page2', 'page3'];
 
 export default function App() {
   const [notes, setNotes] = useState<Map<string, string>>(
-    new Map(Object.entries({ page1, page2 }))
+    new Map(Object.entries({ page1, page2, page3 }))
   );
 
   return <Notebook 

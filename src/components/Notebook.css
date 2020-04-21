@@ -9,13 +9,8 @@
 .Navigator {
   display: flex;
   flex-direction: column;
-
-  width: 10%;
-  height: 100%;
 }
 
 .EditPanel {
-  width: 90%;
-  height: 100%;
   overflow: auto;
 }

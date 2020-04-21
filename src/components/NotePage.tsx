@@ -7,11 +7,12 @@ import { cyrb53 } from '../util/cyrb53';
 import './NotePage.css';
 
 export type NotePageProps = {
-  rawMd: string;  
+  title: string,
+  rawMd: string,
   update?: (body?: string) => void,
 };
 
-export function NotePage({ rawMd, update }: NotePageProps) {
+export function NotePage({ title, rawMd, update }: NotePageProps) {
   const [[prev, active, rem], setBlocks] 
     = useState([ rawMd.split('\n#'), null, [] ]);
  
@@ -40,6 +41,7 @@ export function NotePage({ rawMd, update }: NotePageProps) {
   }
 
   return <div className='NotePage'>
+    <title>{title}</title>
     {prev.map(
       function(val: string, idx: number) {
         function onClick(newCaret?: number) {

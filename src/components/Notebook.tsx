@@ -4,6 +4,7 @@ import { OrderedSet } from 'immutable';
 import { NotePage } from './NotePage';
 
 import './Notebook.css';
+import { AdjustableWidthColumns } from './generic/AdjustableWidthColumns';
 
 type NavButtonProps = {
   key: string,
@@ -36,9 +37,10 @@ export function Notebook({ pinned, notes, update }: NotebookProps) {
     }
   }
 
-  return <div className='Notebook'>
-    <div className='Navigator'>
+  return <AdjustableWidthColumns 
+    className='Notebook'
 
+    left={<div className='Navigator'>
       <span>Meta</span>
       <button key='Diary'>
         Diary
@@ -63,11 +65,18 @@ export function Notebook({ pinned, notes, update }: NotebookProps) {
           {name}
         </button>
       )}
+    </div>}
 
-    </div>
-    <div className='EditPanel'>
-      {open && <NotePage key={open} rawMd={notes.get(open)} update={updatePage} />}
-    </div>
-  </div>;
+    right={
+      open ?
+        <NotePage 
+          key={open} 
+          title={open}
+          rawMd={notes.get(open)} 
+          update={updatePage} 
+        /> :
+        "Please open a page."
+    }
+  />;
   
 }
