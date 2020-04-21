@@ -4,13 +4,14 @@ import './AdjustableWidthColumns.css';
 
 export type AdjustableWidthColumnsProps = {
   className?: string,
+  defaultWidth?: number,
   left: any,
   right: any,
 };
 
-export function AdjustableWidthColumns({ className, left, right }: AdjustableWidthColumnsProps) {
+export function AdjustableWidthColumns({ className, defaultWidth, left, right }: AdjustableWidthColumnsProps) {
   const xPos = useRef(null);
-  const [ width, setWidth ] = useState(300);
+  const [ width, setWidth ] = useState(defaultWidth ? defaultWidth : 300);
 
   useEffect(() => {
     function onMouseUp() {
@@ -19,7 +20,7 @@ export function AdjustableWidthColumns({ className, left, right }: AdjustableWid
   
     function onMouseMove(e: MouseEvent) {
       if (xPos.current !== null) {
-        setWidth(width + e.clientX - xPos.current);
+        setWidth(w => w + e.clientX - xPos.current);
         xPos.current = e.clientX;
       }
     }

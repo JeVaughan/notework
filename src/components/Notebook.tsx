@@ -39,6 +39,7 @@ export function Notebook({ pinned, notes, update }: NotebookProps) {
 
   return <AdjustableWidthColumns 
     className='Notebook'
+    defaultWidth={120}
 
     left={<div className='Navigator'>
       <span>Meta</span>

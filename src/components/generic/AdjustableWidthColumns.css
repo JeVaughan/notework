@@ -9,8 +9,8 @@
 .awc-left {
   flex-grow: 0;
   flex-shrink: 0;
-  
-  min-width: 200px;
+
+  min-width: 100px;
   max-width: calc(80% - 2px);
 }
 
