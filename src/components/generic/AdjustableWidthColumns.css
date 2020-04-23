@@ -12,6 +12,7 @@
 
   min-width: 100px;
   max-width: calc(80% - 2px);
+  height: 100%;
 }
 
 .awc-bar {
@@ -32,4 +33,5 @@
   flex-grow: 1;
   flex-shrink: 1;
   min-width: 10%;
+  height: 100%;
 }

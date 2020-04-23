@@ -2,17 +2,16 @@ import React, { useState, useMemo } from 'react';
 
 import { NoteBlock } from './NoteBlock';
 import { NoteEditor } from './NoteEditor';
-import { cyrb53 } from '../util/cyrb53';
+import { cyrb53 } from '../../util/cyrb53';
 
 import './NotePage.css';
 
 export type NotePageProps = {
-  title: string,
   rawMd: string,
-  update?: (body?: string) => void,
+  write?: (content?: string) => void,
 };
 
-export function NotePage({ title, rawMd, update }: NotePageProps) {
+function NotePage({ rawMd, write }: NotePageProps) {
   const [[prev, active, rem], setBlocks] 
     = useState([ rawMd.split('\n#'), null, [] ]);
  
@@ -41,7 +40,6 @@ export function NotePage({ title, rawMd, update }: NotePageProps) {
   }
 
   return <div className='NotePage'>
-    <title>{title}</title>
     {prev.map(
       function(val: string, idx: number) {
         function onClick(newCaret?: number) {
@@ -81,3 +79,8 @@ export function NotePage({ title, rawMd, update }: NotePageProps) {
     
   </div>;
 }
+
+export default mapStore<NotebookStore, NoteFileProps>(NotePage, {
+  write: writeFile
+
+});

@@ -15,7 +15,7 @@ module.exports = [
     },
   },
   {
-    test: /\.tsx?$/,
+    test: /\.ts(x?)?$/,
     exclude: /(node_modules|\.webpack)/,
     use: {
       loader: 'ts-loader',

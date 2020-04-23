@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Notebook } from './Notebook';
+import { Notebook } from './notes/Notebook';
 import './App.css';
 
 const page1: string = `# Live demo

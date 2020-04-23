@@ -1,0 +1,5 @@
+
+.NoteFileHeader {
+  display: flex;
+  flex-direction: row;
+}

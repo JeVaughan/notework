@@ -1,0 +1,30 @@
+
+.Notebook {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.Navigator {
+  display: flex;
+  flex-direction: column;
+}
+
+.EditPanel {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.NavButton {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background-color: inherit;
+  text-align: left;
+}
+
+.NavButton:hover {
+
+}

@@ -1,0 +1,19 @@
+
+.NoteFile {
+  display: flex;
+  flex-direction: column;
+  
+  width: 100%;
+  height: 100%;
+}
+
+.NoteFile>h1 {
+  flex-grow: 1;
+}
+
+.NoteFileView {
+  flex-grow: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
