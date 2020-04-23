@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { mapStore } from '../../store/MapStore';
 import NotePage from './NotePage';
 import { NotebookStore, setPinned, renameFile, getTargetFilename, isFilePinned } from './NotebookStore';
 
@@ -31,12 +32,17 @@ function NoteFileHeader({
   </div>;
 }
 
-
 export default mapStore<NotebookStore, NoteFileHeaderProps>(
   NoteFileHeader, {
-    filename: getTargetFilename,
-    renameFile,
-    isPinned: isFilePinned,
-    setPinned,
+
+    selectors: {
+      filename: getTargetFilename,
+      isPinned: isFilePinned,
+    },
+
+    actions: {
+      renameFile,
+      setPinned,
+    }
   }
 );

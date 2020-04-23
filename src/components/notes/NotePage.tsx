@@ -1,17 +1,20 @@
 import React, { useState, useMemo } from 'react';
 
+import { cyrb53 } from '../../util/cyrb53';
+import { mapStore } from '../../store/MapStore';
 import { NoteBlock } from './NoteBlock';
 import { NoteEditor } from './NoteEditor';
-import { cyrb53 } from '../../util/cyrb53';
+import { NotebookStore, writeFile, getFilebody } from './NotebookStore';
+import { NoteFileProps } from './NoteFile';
 
 import './NotePage.css';
 
 export type NotePageProps = {
   rawMd: string,
-  write?: (content?: string) => void,
+  writeFile?: (content?: string) => void,
 };
 
-function NotePage({ rawMd, write }: NotePageProps) {
+function NotePage({ rawMd, writeFile }: NotePageProps) {
   const [[prev, active, rem], setBlocks] 
     = useState([ rawMd.split('\n#'), null, [] ]);
  
@@ -80,7 +83,14 @@ function NotePage({ rawMd, write }: NotePageProps) {
   </div>;
 }
 
-export default mapStore<NotebookStore, NoteFileProps>(NotePage, {
-  write: writeFile
+export default mapStore<NotebookStore, NoteFileProps>(
+  NotePage, { 
+    selectors: {
+      rawMd: getFilebody
+    },
 
-});
+    actions: { 
+      writeFile
+    } 
+  }
+);

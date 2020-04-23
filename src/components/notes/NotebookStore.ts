@@ -1,10 +1,16 @@
 import { Map, OrderedSet } from 'immutable';
-import { Action } from '../../store/Action';
+import { Action } from '../../store/Store';
 
 export type NotebookStore = {
   history: OrderedSet<string | undefined>,
   pinned: OrderedSet<string>,
   notes: Map<string, string>,
+};
+
+export const EMPTY_NOTEBOOK: NotebookStore = {
+  history: OrderedSet(),
+  pinned: OrderedSet(),
+  notes: Map()
 };
 
 export function setOpenFile(filename?: string): Action<NotebookStore> {
@@ -15,6 +21,10 @@ export function setOpenFile(filename?: string): Action<NotebookStore> {
 
 export function getTargetFilename({ history }: NotebookStore, filename?: string): string | undefined {
   return filename ? filename : history.last();
+}
+
+export function getFilebody(store: NotebookStore, filename?: string): string | undefined { 
+  return store.notes.get(getTargetFilename(store, filename));
 }
 
 export function writeFile(filebody?: string, filename?: string): Action<NotebookStore> {

@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Notebook } from './notes/Notebook';
+import { Map, List, OrderedSet } from 'immutable';
+
+import { MapStore } from '../store/MapStore';
+import { Store } from '../store/Store';
+import Notebook from './notes/Notebook';
+import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
+
 import './App.css';
 
 const page1: string = `# Live demo
@@ -34,15 +40,16 @@ __underline__
 
 [ ] checkbox`;
 
-const pinned: string[] = ['page1', 'page2', 'page3'];
+const TEST_NOTEBOOK: NotebookStore = {
+  ...EMPTY_NOTEBOOK,
+  pinned: OrderedSet<string>(['page1', 'page2', 'page3']),
+  notes: Map<string>({ page1, page2, page3 }), 
+};
+
+const store = new Store(TEST_NOTEBOOK);
 
 export default function App() {
-  const [notes, setNotes] = useState<Map<string, string>>(
-    new Map(Object.entries({ page1, page2, page3 }))
-  );
-
-  return <Notebook 
-    pinned={pinned} 
-    notes={notes}
-  />;
+  return <MapStore store={store}>
+    <Notebook />
+  </MapStore>;
 }

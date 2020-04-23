@@ -1,0 +1,1 @@
+export type JsonMap<T> = { [key: string]: T };

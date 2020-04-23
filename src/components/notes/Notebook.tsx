@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Map, OrderedSet, List } from 'immutable';
 
 import { AdjustableWidthColumns } from '../generic/AdjustableWidthColumns';
-import { setOpenFile } from './NotebookStore';
+import { mapStore } from '../../store/MapStore';
+import { setOpenFile, NotebookStore, getTargetFilename } from './NotebookStore';
 import NoteFile from './NoteFile';
 
 import './Notebook.css';
@@ -25,12 +26,13 @@ function NavButton({ name, onClick }: NavButtonProps) {
 const META_PAGES: List<string> = List(['Diary', 'Network', 'Index']);
 
 export type NotebookProps = {
+  filename: string,
   pinned: OrderedSet<string>,
   history: OrderedSet<string>,
   setOpenFile: (filename?: string) => void,
 };
 
-function Notebook({ pinned, history, setOpenFile }: NotebookProps) {
+function Notebook({ filename, pinned, history, setOpenFile }: NotebookProps) {
 
   const navButton = useMemo(
     () => (name: string) => 
@@ -58,7 +60,7 @@ function Notebook({ pinned, history, setOpenFile }: NotebookProps) {
     </div>}
 
     right={
-      open ?
+      filename ?
         <NoteFile /> :
         "Please open a page."
     }
@@ -67,5 +69,12 @@ function Notebook({ pinned, history, setOpenFile }: NotebookProps) {
 
 export default mapStore<NotebookStore, NotebookProps>(
   Notebook, {
-  
-});
+    selectors: {
+      filename: getTargetFilename,
+      pinned: ({ pinned }: NotebookStore) => pinned,
+      history: ({ history }: NotebookStore) => history,
+    },
+
+    actions: { setOpenFile, }
+  }
+);
