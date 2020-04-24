@@ -1,43 +1,25 @@
 import React from 'react';
 
-import { mapStore } from '../../store/MapStore';
-import NotePage from './NotePage';
+import { useStore, useActions } from '../../store/MapStore';
 import { NotebookStore, setPinned, renameFile, getTargetFilename, isFilePinned } from './NotebookStore';
 
 import './NoteFileHeader.css';
 
-export type NoteFileHeaderProps = { 
-  filename?: string | null | undefined, 
-  renameFile?: (newTitle: string) => string,
-  isPinned?: boolean, 
-  setPinned?: (pin: boolean) => void,
-};
+export function NoteFileHeader() {
 
-function NoteFileHeader({ 
-  filename, renameFile, 
-  isPinned, setPinned
-}: NoteFileHeaderProps) {
+  const { filename, isPinned } = useStore<NotebookStore>({
+    filename: getTargetFilename,
+    isPinned: isFilePinned
+  });
 
+  const [ doRenameFile, doSetPinned ] 
+    = useActions<NotebookStore>(renameFile, setPinned);
+  
   return <div className='NoteFileHeader'>
-    <button onClick={() => setPinned(!isPinned)}>
+    <button onClick={() => doSetPinned(!isPinned)}>
       {isPinned ? 'pinned' : 'unpinned'}
     </button>
     <h1>{filename ? filename : 'New File'}</h1>
     <span>aka: </span>
   </div>;
-}
-
-export default mapStore<NotebookStore, NoteFileHeaderProps>(
-  NoteFileHeader, {
-
-    selectors: {
-      filename: getTargetFilename,
-      isPinned: isFilePinned,
-    },
-
-    actions: {
-      renameFile,
-      setPinned,
-    }
-  }
-);
+};

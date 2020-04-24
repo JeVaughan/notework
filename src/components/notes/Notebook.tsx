@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import { Map, OrderedSet, List } from 'immutable';
+import React, { useMemo } from 'react';
+import { List } from 'immutable';
 
 import { AdjustableWidthColumns } from '../generic/AdjustableWidthColumns';
-import { mapStore } from '../../store/MapStore';
+import { useStore, useActions } from '../../store/MapStore';
 import { setOpenFile, NotebookStore, getTargetFilename } from './NotebookStore';
-import NoteFile from './NoteFile';
+import { NoteFile } from './NoteFile';
 
 import './Notebook.css';
 
@@ -25,21 +25,22 @@ function NavButton({ name, onClick }: NavButtonProps) {
 
 const META_PAGES: List<string> = List(['Diary', 'Network', 'Index']);
 
-export type NotebookProps = {
-  filename: string,
-  pinned: OrderedSet<string>,
-  history: OrderedSet<string>,
-  setOpenFile: (filename?: string) => void,
-};
+export function Notebook() {
 
-function Notebook({ filename, pinned, history, setOpenFile }: NotebookProps) {
+  const { filename, pinned, history } = useStore({
+    filename: getTargetFilename,
+    pinned: ({ pinned }: NotebookStore) => pinned,
+    history: ({ history }: NotebookStore) => history,
+  });
+
+  const [ doSetOpenFile ] = useActions(setOpenFile);
 
   const navButton = useMemo(
     () => (name: string) => 
       <NavButton
         key={name} 
         name={name} 
-        onClick={() => setOpenFile(name)}
+        onClick={() => doSetOpenFile(name)}
       />,
   
     [ setOpenFile ]
@@ -66,15 +67,3 @@ function Notebook({ filename, pinned, history, setOpenFile }: NotebookProps) {
     }
   />;  
 }
-
-export default mapStore<NotebookStore, NotebookProps>(
-  Notebook, {
-    selectors: {
-      filename: getTargetFilename,
-      pinned: ({ pinned }: NotebookStore) => pinned,
-      history: ({ history }: NotebookStore) => history,
-    },
-
-    actions: { setOpenFile, }
-  }
-);

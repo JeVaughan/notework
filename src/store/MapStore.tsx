@@ -39,6 +39,25 @@ export function mapStore<S, P>(Component: any, mappings: StoreMappings<S>) {
   }
 }
 
+export function useStore<S>(
+  selectors: JsonMap<(state: S) => any>
+): JsonMap<any> {
+
+  const { contents } = useContext(StoreContext)!;
+
+  return useMemo(
+    () => objectFromMap(
+      Map(selectors).map(fn => fn(contents))
+
+    ), [ selectors, contents ]
+  )
+}
+
+export function useActions<S>(...actions: ActionCreator<S, any>[]): any[] {
+  const { binder } = useContext(StoreContext)!;
+  return useMemo(() => actions.map(binder), [ actions, binder ]);
+}
+
 export type MapStoreProps<S> = { 
   store: Store<S> 
   children?: any,

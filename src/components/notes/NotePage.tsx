@@ -5,7 +5,6 @@ import { mapStore } from '../../store/MapStore';
 import { NoteBlock } from './NoteBlock';
 import { NoteEditor } from './NoteEditor';
 import { NotebookStore, writeFile, getFilebody } from './NotebookStore';
-import { NoteFileProps } from './NoteFile';
 
 import './NotePage.css';
 
@@ -83,7 +82,7 @@ function NotePage({ rawMd, writeFile }: NotePageProps) {
   </div>;
 }
 
-export default mapStore<NotebookStore, NoteFileProps>(
+export default mapStore<NotebookStore, NotePageProps>(
   NotePage, { 
     selectors: {
       rawMd: getFilebody

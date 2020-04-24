@@ -3,7 +3,7 @@ import { Map, List, OrderedSet } from 'immutable';
 
 import { MapStore } from '../store/MapStore';
 import { Store } from '../store/Store';
-import Notebook from './notes/Notebook';
+import { Notebook } from './notes/Notebook';
 import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
 
 import './App.css';

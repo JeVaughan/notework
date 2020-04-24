@@ -1,13 +1,11 @@
 import React from 'react';
 
 import NotePage from './NotePage';
-import NoteFileHeader from './NoteFileHeader';
+import { NoteFileHeader } from './NoteFileHeader';
 
 import './NoteFile.css';
 
-export type NoteFileProps = {  };
-
-export default function NoteFile(_: NoteFileProps) {
+export function NoteFile() {
   return <div className='NoteFile'>
     <NoteFileHeader />
     <div className='NoteFileView'>
