@@ -1,4 +1,4 @@
-import React, { useContext, Context, useMemo } from "react";
+import React, { useContext, Context, useMemo, useState } from "react";
 import { Map } from 'immutable';
 
 import { objectFromMap } from "../util/objectFromMap";
@@ -7,8 +7,13 @@ import { JsonMap } from "../util/JsonMap";
 import { bindDispatch, ActionCreator, BoundCreator } from "./ActionCreator";
 import { Store } from "./Store";
 
-const StoreContext: Context<Store<any>>
-  = React.createContext<any>(undefined);
+type StoreHeader<S> = {
+  contents?: S,
+  binder?: <P extends []> (fn: ActionCreator<S, P>) => BoundCreator<P>,
+};
+
+const StoreContext: Context<StoreHeader<any>>
+  = React.createContext<StoreHeader<any>>({});
 
 export type StoreMappings<S> = { 
   selectors?: JsonMap<(state: S) => any>, 
@@ -19,29 +24,39 @@ export function mapStore<S, P>(Component: any, mappings: StoreMappings<S>) {
   const selectors = Map(mappings.selectors);
 
   return function(providedProps: any) {
-    const store: Store<S> = useContext(StoreContext)!;
-    if (store === undefined) 
-      return <>ERROR: Store is undefined</>
-
-    const state: S = useMemo(() => store.contents(), [ store ]);
+    const { contents, binder } = useContext(StoreContext)!;
 
     const bindings: Map<string, BoundCreator<any>> = useMemo(
-      () => Map(mappings.actions).map(fn => bindDispatch(store, fn)),
-      [ store ]
+      () => Map(mappings.actions).map(binder),
+      [ binder ]
     );
 
     return <Component 
-      {...objectFromMap(selectors.map(fn => fn(state)))}
+      {...objectFromMap(selectors.map(fn => fn(contents)))}
       {...objectFromMap(bindings)}
       {...providedProps} 
     />;
   }
 }
 
+export type MapStoreProps<S> = { 
+  store: Store<S> 
+  children?: any,
+};
+
 
 // TODO update with local store, selectors, and routing.
-export function MapStore({ store, children }: any) {
-  return <StoreContext.Provider value={store}>
-    { children }
+export function MapStore<S>({ store, children }: MapStoreProps<S>) {
+  const [contents, setContents] = useState<S>(store.contents());
+
+  function binder<P extends []>(creator: ActionCreator<S, P>): BoundCreator<P> {
+    return function(...args: P) {
+      console.log('Dispatching: %s(%s).', creator.name, JSON.stringify(args))
+      setContents(store.dispatch(creator(...args)).contents());
+    }
+  }
+  
+  return <StoreContext.Provider value={{contents, binder}}>
+    {children}
   </StoreContext.Provider>
 }

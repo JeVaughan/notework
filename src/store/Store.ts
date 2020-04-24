@@ -34,8 +34,12 @@ export class Store<S> {
           this.value, child => { this.dispatch(child) }
         );
 
-        if (result !== undefined) 
+        console.log("Result: " + JSON.stringify(result));
+
+        if (result !== undefined) {
           this.value = result;
+          console.log("Updating: " + JSON.stringify(this.value));
+        }
       };
     }
 

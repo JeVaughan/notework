@@ -14,7 +14,9 @@ export const EMPTY_NOTEBOOK: NotebookStore = {
 };
 
 export function setOpenFile(filename?: string): Action<NotebookStore> {
+  console.log("1: " + filename)
   return function({ history, ...store }: NotebookStore) {
+    console.log("2: " + filename)
     return { history: history.remove(undefined).add(filename), ...store };
   }
 }
