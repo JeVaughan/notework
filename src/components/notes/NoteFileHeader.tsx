@@ -18,17 +18,12 @@ function NoteFileHeader({
   isPinned, setPinned
 }: NoteFileHeaderProps) {
 
-  return <div className='NoteFile'>
-    <div className='NoteFileHeader'>
-      <button onClick={() => setPinned(!isPinned)}>
-        {isPinned ? 'pinned' : 'unpinned'}
-      </button>
-      <h1>{filename ? filename : 'New File'}</h1>
-      <span>aka: </span>
-    </div>
-    <div className='NoteFileView'>
-      <NotePage />
-    </div>
+  return <div className='NoteFileHeader'>
+    <button onClick={() => setPinned(!isPinned)}>
+      {isPinned ? 'pinned' : 'unpinned'}
+    </button>
+    <h1>{filename ? filename : 'New File'}</h1>
+    <span>aka: </span>
   </div>;
 }
 
