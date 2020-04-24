@@ -43,7 +43,7 @@ export function Notebook() {
         onClick={() => doSetOpenFile(name)}
       />,
   
-    [ setOpenFile ]
+    [ doSetOpenFile ]
   );
 
   return <AdjustableWidthColumns 
