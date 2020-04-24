@@ -27,11 +27,11 @@ const META_PAGES: List<string> = List(['Diary', 'Network', 'Index']);
 
 export function Notebook() {
 
-  const { filename, pinned, history } = useStore({
-    filename: getTargetFilename,
-    pinned: ({ pinned }: NotebookStore) => pinned,
-    history: ({ history }: NotebookStore) => history,
-  });
+  const [ filename, pinned, history ] = useStore(
+    getTargetFilename,
+    ({ pinned }: NotebookStore) => pinned,
+    ({ history }: NotebookStore) => history,
+  );
 
   const [ doSetOpenFile ] = useActions(setOpenFile);
 
@@ -45,7 +45,7 @@ export function Notebook() {
   
     [ doSetOpenFile ]
   );
-
+  
   return <AdjustableWidthColumns 
     className='Notebook'
     defaultWidth={120}

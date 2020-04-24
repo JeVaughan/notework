@@ -1,5 +1,6 @@
+import React from 'react';
 
-export type MdPaneProps = {
+export type MarkdownProps = {
   markdown: string,
   writeMd: (newMd: string) => void,
 };
@@ -10,6 +11,6 @@ export type MdPaneProps = {
  * 
  * @param param0 
  */
-export function MdPane(props: MdPaneProps) {
-
+export function Markdown(props: MarkdownProps) {
+  
 }

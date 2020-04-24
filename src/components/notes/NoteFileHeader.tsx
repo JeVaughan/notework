@@ -7,10 +7,9 @@ import './NoteFileHeader.css';
 
 export function NoteFileHeader() {
 
-  const { filename, isPinned } = useStore<NotebookStore>({
-    filename: getTargetFilename,
-    isPinned: isFilePinned
-  });
+  const [ filename, isPinned ] = useStore<NotebookStore>(
+    getTargetFilename, isFilePinned
+  );
 
   const [ doRenameFile, doSetPinned ] 
     = useActions<NotebookStore>(renameFile, setPinned);
