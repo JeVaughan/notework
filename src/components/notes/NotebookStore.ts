@@ -1,3 +1,4 @@
+
 import { Map, OrderedSet } from 'immutable';
 import { Action } from '../../store/Store';
 
@@ -14,15 +15,16 @@ export const EMPTY_NOTEBOOK: NotebookStore = {
 };
 
 export function setOpenFile(filename?: string): Action<NotebookStore> {
-  console.log("1: " + filename)
-  return function({ history, ...store }: NotebookStore) {
-    console.log("2: " + filename)
-    return { history: history.remove(undefined).add(filename), ...store };
+  return function(store: NotebookStore) {
+    const history: OrderedSet<string | undefined> 
+      = OrderedSet([ filename ]).concat(store.history.remove(undefined));
+
+    return { ...store, history };
   }
 }
 
 export function getTargetFilename({ history }: NotebookStore, filename?: string): string | undefined {
-  return filename ? filename : history.last();
+  return filename ? filename : history.first();
 }
 
 export function getFilebody(store: NotebookStore, filename?: string): string | undefined { 

@@ -3,7 +3,8 @@ export type Dispatch<S extends {}>
   = (action: Action<S>) => void;
 
 export type Action<S extends {}> 
-  = (store: S, dispatch: Dispatch<S>) => S | undefined;
+  = (store: S) => S | undefined;
+  // = (store: S, dispatch: Dispatch<S>) => S | undefined;
 
 export class Store<S> { 
   
@@ -30,15 +31,10 @@ export class Store<S> {
     if (!hadPending) {
       let nextAction: Action<S>;
       while (nextAction = this.queue.pop()) {
-        const result: S | undefined = nextAction(
-          this.value, child => { this.dispatch(child) }
-        );
-
-        console.log("Result: " + JSON.stringify(result));
+        const result: S | undefined = nextAction(this.value);
 
         if (result !== undefined) {
           this.value = result;
-          console.log("Updating: " + JSON.stringify(this.value));
         }
       };
     }

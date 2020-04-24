@@ -17,24 +17,6 @@ function mul(multiplier: number): Action<number> {
   }
 }
 
-function facMul(i: number): Action<number> {
-  return function(state, dispatch) {
-    if (i > 0) {
-      dispatch(facMul(i - 1));
-      return state * i;
-    }
-  }
-}
-
-function echo(i: number): Action<string> {
-  return function(store: string, dispatch: Dispatch<string>) {
-    if (i < 10) 
-      dispatch(echo(i+1))
-
-    return store + String(i);
-  }
-}
-
 it('updates the contents after dispatching a single action', () => {
   expect(
     new Store(1)
@@ -53,31 +35,51 @@ it('subsequent actions should act on mutated state', () => {
   ).toEqual(9);
 });
 
-it('queues subactions to be evaluated in order afterwards', () => {
-  expect(
-    new Store("")
-      .dispatch(echo(0))
-      .contents()
-  ).toEqual("0123456789");
-});
+// Jev, all these tests are for actions types which accept a dispatch parameter.
 
-it('queues subactions act on mutated state', () => {
-  expect(
-    new Store("")
-      .dispatch(echo(0))
-      .dispatch(echo(5))
-      .contents()
-  ).toEqual("012345678956789");
-});
+// function facMul(i: number): Action<number> {
+//   return function(state, dispatch) {
+//     if (i > 0) {
+//       dispatch(facMul(i - 1));
+//       return state * i;
+//     }
+//   }
+// }
 
-it('actions returning undefined do not update state', () => {
-  expect(new Store(42).dispatch(facMul(0)).contents()).toEqual(42);
-});
+// function echo(i: number): Action<string> {
+//   return function(store: string, dispatch: Dispatch<string>) {
+//     if (i < 10) 
+//       dispatch(echo(i+1))
 
-it('subactions can be parallelised', () => {
-  expect(
-    new Store(1)
-      .dispatch(facMul(4), facMul(3), facMul(2))
-      .contents()
-  ).toEqual(288);
-});
+//     return store + String(i);
+//   }
+// }
+
+// it('queues subactions to be evaluated in order afterwards', () => {
+//   expect(
+//     new Store("")
+//       .dispatch(echo(0))
+//       .contents()
+//   ).toEqual("0123456789");
+// });
+
+// it('queues subactions act on mutated state', () => {
+//   expect(
+//     new Store("")
+//       .dispatch(echo(0))
+//       .dispatch(echo(5))
+//       .contents()
+//   ).toEqual("012345678956789");
+// });
+
+// it('actions returning undefined do not update state', () => {
+//   expect(new Store(42).dispatch(facMul(0)).contents()).toEqual(42);
+// });
+
+// it('subactions can be parallelised', () => {
+//   expect(
+//     new Store(1)
+//       .dispatch(facMul(4), facMul(3), facMul(2))
+//       .contents()
+//   ).toEqual(288);
+// });
