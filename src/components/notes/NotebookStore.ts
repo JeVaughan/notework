@@ -24,7 +24,7 @@ export function setOpenFile(filename?: string): Action<NotebookStore> {
 }
 
 export function getTargetFilename({ history }: NotebookStore, filename?: string): string | undefined {
-  return filename ? filename : history.first();
+  return filename ? filename : history.first(undefined);
 }
 
 export function getFilebody(store: NotebookStore, filename?: string): string | undefined { 
@@ -56,7 +56,7 @@ export function renameFile(newFilename: string, filename?: string): Action<Noteb
     if (oldFilename) {
       const filebody = notes.get(oldFilename);
 
-      if (!notes.contains(newFilename) || typeof filebody === 'string') {
+      if (!notes.has(newFilename) || typeof filebody === 'string') {
         return {
           history: history,
           
@@ -80,23 +80,23 @@ export function setPinned(pin: boolean | number, filename?: string): Action<Note
     const { pinned, notes } = store;
     const target: string | undefined = getTargetFilename(store, filename);
 
-    if (target && notes.contains(target)) {
+    if (target !== undefined && notes.has(target)) {
       if (typeof pin === 'number') {
         return {
+          ...store,
+
           pinned: pinned
             .take(pin).remove(target).add(target)
-            .concat(pinned.skip(pin)),
-
-          ...store
+            .concat(pinned.skip(pin))
         };
         
       } else {
         return {
+          ...store,
+
           pinned: pin ? 
             pinned.add(target) :
             pinned.remove(target),
-
-          ...store
         };
       }
     }
@@ -104,5 +104,5 @@ export function setPinned(pin: boolean | number, filename?: string): Action<Note
 }
 
 export function isFilePinned(store: NotebookStore, filename?: string): boolean {
-  return store.history.contains(getTargetFilename(store, filename));
+  return store.pinned.has(getTargetFilename(store, filename));
 }

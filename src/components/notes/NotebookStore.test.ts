@@ -1,6 +1,6 @@
 import { OrderedSet, Map } from 'immutable';
 
-import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned } from "./NotebookStore";
+import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned, getTargetFilename } from "./NotebookStore";
 
 const store: NotebookStore = { 
   notes: Map({ 
@@ -20,6 +20,14 @@ const store: NotebookStore = {
 
 it('setOpenFile should open existing files', () => {
   expect(setOpenFile('meh')(store).history.first()).toEqual('meh');
+});
+
+it('getTargetFile should default to the openFile', () => {
+  expect(getTargetFilename(store)).toBeUndefined();
+
+  const openStore = setOpenFile('meh')(store);
+  expect(getTargetFilename(openStore)).toEqual('meh');
+  expect(getTargetFilename(openStore, 'foo')).toEqual('foo');
 });
 
 it('setOpenFile should ignore non-existant files', () => {
@@ -67,6 +75,12 @@ it('setPinned should append new pins to the list', () => {
 
   expect(setPinned(true, 'foo')(setPinned(true, 'meh')(store)).pinned)
     .toEqual(OrderedSet([ 'meh', 'foo' ]));
+});
+
+it('setPinned should default to targetting the open file', () => {
+  const openStore = setPinned(true)(setOpenFile('meh')(store));
+  expect(openStore.pinned).toEqual(OrderedSet([ 'meh' ]));
+  expect(setPinned(false)(openStore).pinned).toEqual(OrderedSet())
 });
 
 it('setPinned should remove existing pins from the list', () => {
