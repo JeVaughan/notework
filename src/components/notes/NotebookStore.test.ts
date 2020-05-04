@@ -3,14 +3,14 @@ import { OrderedSet, Map } from 'immutable';
 import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned, getTargetFilename } from "./NotebookStore";
 
 const store: NotebookStore = { 
+  ...EMPTY_NOTEBOOK,
+
   notes: Map({ 
     meh: 'meh-content',
     foo: 'foo-body',
     bar: 'bar-text',
     ahh: 'ahh-string',
-  }), 
-
-  ...EMPTY_NOTEBOOK
+  })
 };
 
 
@@ -27,6 +27,7 @@ it('getTargetFile should default to the openFile', () => {
 
   const openStore = setOpenFile('meh')(store);
   expect(getTargetFilename(openStore)).toEqual('meh');
+  expect(getTargetFilename(openStore, 'meh')).toEqual('meh');
   expect(getTargetFilename(openStore, 'foo')).toEqual('foo');
 });
 
@@ -84,11 +85,18 @@ it('setPinned should default to targetting the open file', () => {
 });
 
 it('setPinned should remove existing pins from the list', () => {
-  expect(setPinned(false, 'meh')(setPinned(true, 'meh')(store)).pinned)
-    .toHaveLength(0)
+  expect(
+    setPinned(false, 'meh')(
+      setPinned(true, 'meh')(store)
+    ).pinned.toArray()
+  ).toEqual([])
 
-  expect(setPinned(false, 'meh')(setPinned(true, 'foo')(setPinned(true, 'meh')(store))).pinned)
-    .toEqual(OrderedSet([ 'foo' ]));
+  expect(
+    setPinned(false, 'meh')(
+      setPinned(true, 'foo')(
+        setPinned(true, 'meh')(store)
+    )).pinned.toArray()
+  ).toEqual([ 'foo' ]);
 });
 
 
@@ -96,8 +104,11 @@ it('setPinned can insert new pins at a specific location', () => {
   const pinned = OrderedSet([ 'meh', 'foo', 'bar' ]);
   const store2: NotebookStore = { ...store, pinned };
 
-  expect(setPinned(0, 'ahh')(store2).pinned).toEqual([ 'ahh', 'meh', 'foo', 'bar' ]);
-  expect(setPinned(2, 'ahh')(store2).pinned).toEqual([ 'meh', 'foo', 'ahh',  'bar' ]);
+  expect(setPinned(0, 'ahh')(store2).pinned.toArray())
+    .toEqual([ 'ahh', 'meh', 'foo', 'bar' ]);
+
+  expect(setPinned(2, 'ahh')(store2).pinned.toArray())
+    .toEqual([ 'meh', 'foo', 'ahh',  'bar' ]);
 });
 
 
@@ -105,6 +116,9 @@ it('setPinned should be able to re-order existing pins', () => {
   const pinned = OrderedSet([ 'meh', 'foo', 'bar' ]);
   const store2: NotebookStore = { ...store, pinned };
 
-  expect(setPinned(1, 'meh')(store2).pinned).toEqual([ 'foo', 'meh', 'bar' ]);
-  expect(setPinned(0, 'bar')(store2).pinned).toEqual([ 'bar', 'meh', 'foo' ]);
+  expect(setPinned(1, 'meh')(store2).pinned.toArray())
+    .toEqual([ 'foo', 'meh', 'bar' ]);
+
+  expect(setPinned(0, 'bar')(store2).pinned.toArray())
+    .toEqual([ 'bar', 'meh', 'foo' ]);
 });

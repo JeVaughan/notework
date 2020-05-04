@@ -80,14 +80,13 @@ export function setPinned(pin: boolean | number, filename?: string): Action<Note
     const { pinned, notes } = store;
     const target: string | undefined = getTargetFilename(store, filename);
 
-    if (target !== undefined && notes.has(target)) {
-      if (typeof pin === 'number') {
+    if (target && notes.has(target)) {
+      if (typeof pin == 'number') {
         return {
           ...store,
-
-          pinned: pinned
-            .take(pin).remove(target).add(target)
-            .concat(pinned.skip(pin))
+          pinned: 
+            pinned.remove(target).take(pin)
+              .add(target).concat(pinned)
         };
         
       } else {
