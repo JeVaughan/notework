@@ -39,11 +39,11 @@ export function writeFile(filebody?: NoteAst, filename?: string): Action<Noteboo
 
     if (target) {
       return {
-        notes: typeof filebody === 'string' ? 
+        ...store,
+
+        notes: filebody ? 
           notes.set(target, filebody) : 
           notes.remove(target),
-
-        ...store
       };
     }
   }

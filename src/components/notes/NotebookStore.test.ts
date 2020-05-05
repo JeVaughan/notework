@@ -1,7 +1,7 @@
 import { OrderedSet, Map } from 'immutable';
 
-import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned, getTargetFilename } from "./NotebookStore";
-import { deserialise } from './NoteAst';
+import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned, getTargetFilename, writeFile, getFilebody } from "./NotebookStore";
+import { deserialise, updateHash } from './NoteAst';
 
 const store: NotebookStore = { 
   ...EMPTY_NOTEBOOK,
@@ -66,6 +66,20 @@ it('setOpenFile should be able to close files', () => {
   )))).history.first()).toBeUndefined();
 });
 
+
+// ----------------------- //
+// --- FILE MANAGEMENT --- //
+// ----------------------- //
+
+it('writeFile should update the contents of a file', () => {
+  expect(
+    getFilebody(
+      writeFile(updateHash({ markdown: "hello" }))(
+        setOpenFile('meh')(store)
+      )
+    )
+  ).toEqual(updateHash({ markdown: "hello" }));
+});
 
 // ---------------------- //
 // --- PIN MANAGEMENT --- //
