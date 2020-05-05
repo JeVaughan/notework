@@ -10,10 +10,19 @@ export type NoteAst = {
 const domParser = new DOMParser();
 
 function getChildDocs(xml: Element): List<Element> {
-  const children = xml.getElementsByTagName('nb');
   const array = [];
-  for (var i = 0; i < children.length; i++) {
-    array.push(children[i]);
+  
+  for (
+    let node: Element = xml.firstElementChild; 
+    node != null; 
+    node = node.nextElementSibling
+  ) {
+
+    if (node.nodeType == Node.ELEMENT_NODE && 
+        node.tagName == 'nb') {
+
+      array.push(node);
+    }
   }
 
   return List(array);

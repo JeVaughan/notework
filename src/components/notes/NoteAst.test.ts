@@ -30,6 +30,45 @@ const treeAst: NoteAst = {
     }
   ])
 };
+
+const complexXml: string = 
+  "<nb><nb>Changes</nb><nb>Table of Contents\n" +
+  "<nb>Renders actual</nb><nb>Allows you to</nb></nb></nb>";
+
+const complexAst: NoteAst = {
+  hashValue: cyrb53(
+    "", // Root
+    cyrb53("Changes"),
+    cyrb53("Table of Contents\n",
+      cyrb53("Renders actual"),
+      cyrb53("Allows you to")
+    )
+  ),
+
+  children: List([{
+
+      hashValue: cyrb53("Changes"),
+      markdown: "Changes",
+
+    }, {
+      hashValue: cyrb53("Table of Contents\n",
+        cyrb53("Renders actual"),
+        cyrb53("Allows you to")
+      ),
+      markdown: "Table of Contents\n",
+
+      children: List([{
+          hashValue: cyrb53("Renders actual"),
+          markdown: "Renders actual",
+
+        }, { 
+          hashValue: cyrb53("Allows you to"),
+          markdown: "Allows you to",
+        }
+      ])
+    }
+  ])
+};
   
 
 // ------------------ //
@@ -48,6 +87,10 @@ it('deserialise xml with children', () => {
   expect(deserialise(treeXml)).toEqual(treeAst);
 });
 
+it('deserialise actual example', () => {
+  expect(deserialise(complexXml)).toEqual(complexAst);
+});
+
 it('serialise empty xml', () => {
   expect(serialise(emptyAst)).toEqual(emptyXml);
 });
@@ -58,4 +101,8 @@ it('serialise xml with markdown', () => {
 
 it('serialise xml with children', () => {
   expect(serialise(treeAst)).toEqual(treeXml);
+});
+
+it('serialise actual example', () => {
+  expect(serialise(complexAst)).toEqual(complexXml);
 });
