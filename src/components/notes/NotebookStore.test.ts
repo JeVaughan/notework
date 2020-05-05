@@ -1,15 +1,16 @@
 import { OrderedSet, Map } from 'immutable';
 
 import { EMPTY_NOTEBOOK, setOpenFile, NotebookStore, setPinned, getTargetFilename } from "./NotebookStore";
+import { deserialise } from './NoteAst';
 
 const store: NotebookStore = { 
   ...EMPTY_NOTEBOOK,
 
   notes: Map({ 
-    meh: 'meh-content',
-    foo: 'foo-body',
-    bar: 'bar-text',
-    ahh: 'ahh-string',
+    meh: deserialise('<nb>meh-content</nb>'),
+    foo: deserialise('<nb>foo-body</nb>'),
+    bar: deserialise('<nb>bar-text</nb>'),
+    ahh: deserialise('<nb>ahh-string</nb>'),
   })
 };
 

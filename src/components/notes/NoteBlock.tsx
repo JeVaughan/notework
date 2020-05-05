@@ -1,25 +1,45 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import * as react from 'react';
 
+import { useStore } from '../../store/MapStore';
+import { Action } from '../../store/Store';
+
 import { NoteMd } from './NoteMd';
+import { NoteAst } from './NoteAst';
+import { NoteEditor } from './NoteEditor';
 
 import './NoteBlock.css';
 
 export type NoteBlockProps = {
-  rawMd?: string,
-  onClick?: (newCaret?: number) => void
+  isChild?: boolean,
+  ast: NoteAst,
+  // dispatch: (action: Action<NoteAst>) => void,
 };
 
 type MouseEventDiv = react.MouseEvent<HTMLDivElement, MouseEvent>;
 
-export function NoteBlock({ rawMd, onClick }: NoteBlockProps) {
-  const doClick = useMemo(
-    () => function(event: MouseEventDiv) {
-      onClick(); // TODO figure out `newCaret` position.
+export function NoteBlock({ ast, isChild }: NoteBlockProps) {
+  const { markdown, children } = ast;
 
-    }, [ onClick ]
-  )
-  return <div className='NoteBlock' onClick={doClick}>
-    <NoteMd rawMd={rawMd} />
-  </div>;
+  // Recurse down children in AST.
+  const cListItems = useMemo(() => 
+    children && children.size > 0 && <ul>{
+      children.map(child =>
+        <NoteBlock
+          key={child.hashValue} 
+          ast={child}
+          isChild
+        />
+      )
+    }</ul>, [ children ]
+  );
+
+  // Wrap non-root nodes in list item tags.
+  if (markdown || isChild) {
+    return <li>
+      {<NoteEditor key='md' rawMd={markdown}/>}
+      {cListItems}
+    </li>
+
+  } else return cListItems;
 }

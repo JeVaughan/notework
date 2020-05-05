@@ -1,6 +1,7 @@
 import React, { useState, useMemo, ChangeEvent, KeyboardEvent, useEffect } from 'react';
 
 import './NoteEditor.css';
+import { NoteMd } from './NoteMd';
 
 export type NoteEditorProps = {
   rawMd?: string,
@@ -8,7 +9,7 @@ export type NoteEditorProps = {
 };
 
 function calcRows(text: string): number {
-  return 1 + Math.max(3, text.split('\n').length);
+  return 1 + text.split('\n').length;
 }
 
 export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
@@ -45,6 +46,8 @@ export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
     }
   }
 
+  return <NoteMd rawMd={updateMd} />;
+  
   return <textarea
     className='NoteEditor'
     rows={rows}
