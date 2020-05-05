@@ -32,6 +32,10 @@ function getHash(markdown: string = "", children: List<NoteAst> = List()): numbe
   return cyrb53(markdown, ...children.map(({ hashValue }) => hashValue).toArray());
 }
 
+export function updateHash({ markdown, children }: Partial<NoteAst>): NoteAst {
+  return { hashValue: getHash(markdown, children), markdown, children };
+}
+
 export function deserialise(xml: Element | string): NoteAst {
   if (xml instanceof Element) {
     const { firstChild } = xml;
@@ -43,9 +47,7 @@ export function deserialise(xml: Element | string): NoteAst {
     const children = xml.children.length ? 
       getChildDocs(xml).map(deserialise) : undefined;
 
-    const hashValue: number = getHash(markdown, children);
-
-    return { hashValue, markdown, children };
+    return updateHash({ markdown, children });
 
   } else {
     const doc = domParser.parseFromString(xml, 'text/xml');

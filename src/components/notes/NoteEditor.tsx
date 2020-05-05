@@ -1,15 +1,14 @@
 import React, { useState, useMemo, ChangeEvent, KeyboardEvent, useEffect } from 'react';
 
 import './NoteEditor.css';
-import { NoteMd } from './NoteMd';
 
 export type NoteEditorProps = {
   rawMd?: string,
-  onUpdate?: (updateMd?: string, navigate?: number) => void
+  onUpdate?: (md?: string, nav?: number) => void
 };
 
-function calcRows(text: string): number {
-  return 1 + text.split('\n').length;
+function calcRows(text: string = ''): number {
+  return text.split('\n').length;
 }
 
 export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
@@ -32,7 +31,7 @@ export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
   }
 
   function onBlur(_: ChangeEvent<HTMLTextAreaElement>) {
-    // finishEdit();
+    finishEdit();
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
@@ -46,8 +45,6 @@ export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
     }
   }
 
-  return <NoteMd rawMd={updateMd} />;
-  
   return <textarea
     className='NoteEditor'
     rows={rows}
