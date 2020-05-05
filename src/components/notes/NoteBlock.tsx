@@ -21,6 +21,11 @@ type MouseEventDiv = react.MouseEvent<HTMLDivElement, MouseEvent>;
 export function NoteBlock({ ast, isChild }: NoteBlockProps) {
   const { markdown, children } = ast;
 
+  const cMarkdown = useMemo(
+    () => markdown ? <NoteEditor key='md' rawMd={markdown}/> : null,
+    [ markdown ]
+  );
+
   // Recurse down children in AST.
   const cListItems = useMemo(() => 
     children && children.size > 0 && <ul>{
@@ -35,11 +40,7 @@ export function NoteBlock({ ast, isChild }: NoteBlockProps) {
   );
 
   // Wrap non-root nodes in list item tags.
-  if (markdown || isChild) {
-    return <li>
-      {<NoteEditor key='md' rawMd={markdown}/>}
-      {cListItems}
-    </li>
-
-  } else return cListItems;
+  return isChild ? 
+    <li>{cMarkdown} {cListItems}</li> :
+    <>{cMarkdown} {cListItems}</>;
 }
