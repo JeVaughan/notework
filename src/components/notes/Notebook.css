@@ -9,6 +9,12 @@
 .Navigator {
   display: flex;
   flex-direction: column;
+  padding: 4px;
+}
+
+.Navigator > span {
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .EditPanel {
@@ -26,5 +32,5 @@
 }
 
 .NavButton:hover {
-
+  background-color: lightblue;
 }

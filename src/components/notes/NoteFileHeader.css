@@ -8,6 +8,10 @@
   vertical-align: baseline;
 }
 
+.PinNoteButton:hover {
+  cursor: pointer;
+}
+
 .NoteFileHeader > span {
   font-size: 32px;
   margin: 6px;

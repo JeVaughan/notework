@@ -23,7 +23,12 @@ function NavButton({ name, onClick }: NavButtonProps) {
   </button>
 }
 
-const META_PAGES: List<string> = List(['Diary', 'Network', 'Index']);
+const META_PAGES: List<string> = List([
+  'Diary', 
+  'Stats',
+  'Network', 
+  'Index'
+]);
 
 export function Notebook() {
 
@@ -51,6 +56,7 @@ export function Notebook() {
     defaultWidth={120}
 
     left={<div className='Navigator'>
+      <span>Project</span>
       {META_PAGES.map(navButton)}
 
       <hr/><span>Pinned</span>

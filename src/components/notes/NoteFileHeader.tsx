@@ -19,9 +19,10 @@ export function NoteFileHeader() {
   
   return <div className='NoteFileHeader'>
     <img 
-      onClick={() => doSetPinned(!isPinned)}
+      className="PinNoteButton"
       src={isPinned ? StarFill : StarLine}
       alt={isPinned ? 'Pinned' : 'Unpinned'}
+      onClick={() => doSetPinned(!isPinned)}
     />
     <span>{filename ? filename : 'New File'}</span>
     aka:
