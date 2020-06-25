@@ -15,7 +15,11 @@
       "*": ["node_modules/*"]
     }
   },
+  "files": [
+    "build.d.ts"
+  ],
   "include": [
-    "src/**/*"
+    "src/**/*", 
+    "build.d.ts"
   ]
 }
