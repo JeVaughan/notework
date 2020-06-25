@@ -1,5 +1,5 @@
 import * as electron from 'electron';
-import IconPath from './images/gene-editing-icon_640.png';
+import IconPath from './images/edit-icon_1920.png';
 
 // import express from 'express';
 
@@ -13,7 +13,8 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => {
 
   const icon: electron.NativeImage = 
-    electron.nativeImage.createFromPath(IconPath);
+    electron.nativeImage.createFromPath(IconPath)
+      .resize({ width: 32, height: 32 });
 
   const window = new electron.BrowserWindow({
     height: 600, width: 800, show: false, icon

@@ -23,7 +23,7 @@ export function NoteFileHeader() {
       src={isPinned ? StarFill : StarLine}
       alt={isPinned ? 'Pinned' : 'Unpinned'}
     />
-    <h1>{filename ? filename : 'New File'}</h1>
-    <span>aka: </span>
+    <span>{filename ? filename : 'New File'}</span>
+    aka:
   </div>;
 };

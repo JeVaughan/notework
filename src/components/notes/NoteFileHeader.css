@@ -1,5 +1,14 @@
 
 .NoteFileHeader {
-  display: flex;
+  display: inline-block;
   flex-direction: row;
+}
+
+.NoteFileHeader > * {
+  vertical-align: baseline;
+}
+
+.NoteFileHeader > span {
+  font-size: 32px;
+  margin: 6px;
 }
