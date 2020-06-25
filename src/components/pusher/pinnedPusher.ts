@@ -1,9 +1,8 @@
 
-import fs from 'fs';
-import { Map, OrderedSet } from "immutable";
+import { OrderedSet } from "immutable";
 
 import { DirectoryMap, EMPTY_DIRECTORY_MAP } from "./FsPusher";
-import { PusherM } from "./Push";
+import { PusherFn } from "./Push";
 import { mapPusher } from "./mapPusher";
 
 /**
@@ -36,8 +35,12 @@ export function unmapPinned(map: DirectoryMap): OrderedSet<string> {
  * @param metaDirP DirectoryMap pusher for the metadata directory.
  */
 export function pinnedPusher(
-  metaDirP: PusherM<number, DirectoryMap>
-): PusherM<number, OrderedSet<string>> {
+  metaDirP: PusherFn<number, DirectoryMap>
+): PusherFn<number, OrderedSet<string>> {
 
-  return mapPusher(metaDirP, mapPinned, unmapPinned);
+  return mapPusher(
+    metaDirP, 
+    mapPinned,
+    unmapPinned
+  );
 }

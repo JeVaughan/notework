@@ -22,7 +22,7 @@ type MouseEventDiv = react.MouseEvent<HTMLDivElement, MouseEvent>;
 
 
 export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
-  const { markdown, children } = ast;
+  const { hashValue, markdown, children } = ast;
 
   // Ensure current path is not undefined.
   path = path ? path : List();
@@ -47,36 +47,31 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
     }
   }
 
-  const cMarkdown = useMemo(() => {
-    if (isSelected && setAst) 
-      return <NoteEditor 
-        key='md' rawMd={markdown}
+  const cMarkdown =
+    isSelected && setAst ?
+      <NoteEditor 
+        key={hashValue} 
+        rawMd={markdown}
         onUpdate={(md, nav) => {
           setMarkdown(md);
           navigate(nav);
         }}
-      />;
-
-    return <div onClick={() => setSelected(path)}>
-      <NoteMd rawMd={markdown} />
-    </div>;
-
-    }, [ markdown, isSelected ]
-  );
+      /> :
+      <div onClick={() => setSelected(path)}>
+        <NoteMd rawMd={markdown} />
+      </div>;
 
   // Recurse down children in AST.
-  const cListItems = useMemo(() => 
-    children && children.size && <ul>{
-      children.map((child, idx) =>
-        <NoteBlock
-          key={child.hashValue} 
-          path={path.push(idx)}
-          ast={child}
-          setAst={setChildAst(idx)}
-        />
-      )
-    }</ul>, [ children ]
-  );
+  const cListItems = children && children.size && <ul>{
+    children.map((child, idx) =>
+      <NoteBlock
+        key={child.hashValue} 
+        path={path.push(idx)}
+        ast={child}
+        setAst={setChildAst(idx)}
+      />
+    )
+  }</ul>;
 
   // Wrap non-root nodes in list item tags.
   return path && path.size ? 

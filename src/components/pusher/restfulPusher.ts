@@ -9,7 +9,7 @@ export function restfulPusher(
   return function(
     baseVersion: string, 
     update?: string
-  ): Pushed<string, any> {
+  ): Promise<Pushed<string, any>> {
     
     const ver: string = encodeURIComponent(baseVersion);
     const method: string = update ? 'POST' : 'GET';
@@ -18,7 +18,7 @@ export function restfulPusher(
     http.open(method, `${endpointUrl}?ver=${ver}`, true);
     http.setRequestHeader("Content-Type", "application/json");
     
-    return new Promise(
+    return new Promise<Pushed<string, any>>(
       function(resolve, reject): void {
         http.onload = _ => resolve(JSON.parse(http.response));
         http.onerror = _ => reject();
