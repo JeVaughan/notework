@@ -2,13 +2,15 @@
 import { selectPusher } from "./selectPusher";
 import { testPusher } from "./testPusher";
 import { pushAcc } from "./Pushed";
+import { PusherFn } from "./Push";
+
+type TestT = { a: boolean, b: number, c: string };
 
 it('should a value under a given field', () => {
-  const testP = selectPusher('a', testPusher(pushAcc(1, { a: 1 })));
-  expect(testP(1)).toEqual(pushAcc(1, 1));
-});
+  const pusher: PusherFn<number, TestT>
+    = testPusher(pushAcc(1, { a: true, b: 1, c: 'hi' }));
 
-it('should return undefined if that field doesn\'t exist', () => {
-  const testP = selectPusher('b', testPusher(pushAcc(1, {})));
-  expect(testP(1)).toEqual(pushAcc(1, undefined));
+  const testP = selectPusher('a', pusher);
+  
+  expect(testP(1, false)).toEqual(pushAcc(1, true));
 });

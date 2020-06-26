@@ -5,16 +5,16 @@ import { fieldWrap } from "../../util/fieldWrap";
 import { PusherFn } from "./Push";
 import { mapPusher } from "./mapPusher";
 
-export function selectPusher<
+export function wrapPusher<
   K, M, f extends keyof M
 >(
   fieldname: f, 
-  basePusher: PusherFn<K, Pick<M, f>>
-): PusherFn<K, M[f]> {
+  basePusher: PusherFn<K, M[f]>
+): PusherFn<K, Pick<M, f>> {
   
-  return mapPusher<K, Pick<M, f>, M[f]>(
+  return mapPusher<K, M[f], Pick<M, f>>(
     basePusher, 
-    fieldWrap<M, f>(fieldname),
-    fieldGet<M, f>(fieldname)
+    fieldGet<M, f>(fieldname),
+    fieldWrap<M, f>(fieldname)
   );
 } 
