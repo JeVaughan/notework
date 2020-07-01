@@ -1,8 +1,7 @@
 
 import { List } from 'immutable';
 
-import { Pushed } from "./Pushed";
-import { PusherFn } from "./Push";
+import { PusherFn, Pushed } from "./Push";
 
 export function testPusher<K, V>(
   ...args: Pushed<K, V>[]

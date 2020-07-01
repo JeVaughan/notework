@@ -15,7 +15,7 @@ export function restfulPusher(
     const method: string = update ? 'POST' : 'GET';
 
     const http = new XMLHttpRequest();
-    http.open(method, `${endpointUrl}?ver=${ver}`, true);
+    http.open(method, `https://${endpointUrl}?ver=${ver}`, true);
     http.setRequestHeader("Content-Type", "application/json");
     
     return new Promise<Pushed<string, any>>(

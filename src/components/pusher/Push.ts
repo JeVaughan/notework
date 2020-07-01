@@ -1,4 +1,9 @@
-import { Pushed } from "./Pushed";
+
+export type Pushed<K, V> = {
+  newVersion?: K,
+  newValue?: V,
+  error?: string
+};
 
 export type PPushed<K, V> = 
   Promise<Pushed<K, V>> | Pushed<K, V>;

@@ -1,21 +1,22 @@
 
 import { testPusher } from "./testPusher";
-import { pushAcc } from "./Pushed";
 
 it('should return a specified value', () => {
-  const testP = testPusher(pushAcc(1, 1));
+  const testP = testPusher({ newVersion: 1, newValue: 1 });
 
-  expect(testP(1)).toEqual(pushAcc(1, 1));
-  expect(testP(1)).toEqual(pushAcc(1, 1));
+  expect(testP(1)).toEqual({ newVersion: 1, newValue: 1 });
+  expect(testP(1)).toEqual({ newVersion: 1, newValue: 1 });
 });
 
 it('should cycle through a sequence', () => {
   const testP = testPusher(
-    pushAcc(1, 1), pushAcc(2, 2), pushAcc(3, 3),
+    { newVersion: 1, newValue: 1 },
+    { newVersion: 2, newValue: 2 },
+    { newVersion: 3, newValue: 3 },
   );
 
-  expect(testP(1)).toEqual(pushAcc(1, 1));
-  expect(testP(1)).toEqual(pushAcc(2, 2));
-  expect(testP(1)).toEqual(pushAcc(3, 3));
-  expect(testP(1)).toEqual(pushAcc(3, 3));
+  expect(testP(1)).toEqual({ newVersion: 1, newValue: 1 });
+  expect(testP(1)).toEqual({ newVersion: 2, newValue: 2 });
+  expect(testP(1)).toEqual({ newVersion: 3, newValue: 3 });
+  expect(testP(1)).toEqual({ newVersion: 3, newValue: 3 });
 });

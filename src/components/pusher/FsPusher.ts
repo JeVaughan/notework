@@ -2,7 +2,6 @@ import fs from 'fs';
 import { Map } from 'immutable';
 
 import { PusherM, PusherFn, pusherM } from './Push';
-import { Pushed, pushAcc, pushRej, pushMod } from './Pushed';
 
 export type DirectoryMap = Map<string, string | null>;
 export const EMPTY_DIRECTORY_MAP: DirectoryMap = Map();
@@ -45,18 +44,18 @@ export function fsPusherFn(dir: string): PusherFn<number, DirectoryMap> {
   return function(baseVersion: number, update?: DirectoryMap) {
 
     const timestamps = fsReadDir(baseVersion, dir);
-    const newModifications = fsReadFiles(timestamps.keys());
+    const newValue = fsReadFiles(timestamps.keys());
     const newVersion = timestamps.max(Math.max);
       
-    if (update) {
-      const conflicts = newModifications.keySeq().toSet().union(update.keys());
+    if (update && !update.isEmpty()) {
+      const conflicts = newValue.keySeq().toSet().union(update.keys());
       if (conflicts.size > 0)
-        return pushRej(newVersion, newModifications);
+        return { newVersion, newValue };
 
       fsWriteFiles(update);
-      return pushMod(baseVersion, newModifications.merge(update));
+      return { newVersion, newValue };
     }
-    return pushAcc(newVersion, newModifications);
+    return { newVersion, newValue };
   }
 }
 

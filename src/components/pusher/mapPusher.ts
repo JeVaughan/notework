@@ -1,10 +1,13 @@
 
-import { PusherFn, PPushed } from './Push';
-import { Pushed } from './Pushed';
+import { PusherFn, PPushed, Pushed } from './Push';
 
 export function mapPushed<v, V>(fn: (_: v) => V) {
   return function<K>(pushed: Pushed<K, v>): Pushed<K, V> {
-    return { ...pushed, data: fn(pushed.data) };
+    const { newValue, ...remaining } = pushed;
+
+    return newValue !== undefined ?
+      { newValue: fn(newValue), ...remaining } :
+      remaining
   }
 }
 
