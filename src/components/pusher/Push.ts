@@ -19,6 +19,8 @@ export type PusherFn<K, V> = (
   update?: V,
 ) => PPushed<K, V>;
 
+export type Pusher<K, V> = PusherM<K, V> | PusherFn<K, V>;
+
 export type OnCloseFn = () => void;
 
 export function doNothing(): void {
@@ -58,16 +60,21 @@ export function pusherM<K, V>(
 }
 
 export function pusherFn<K, V>(
-  pusherM: PusherM<K, V>
+  pusher: Pusher<K, V>
 ): PusherFn<K, V> {
 
-  return function(
-    baseVersion: K,
-    update?: V,
-  ): PPushed<K, V> {
+  if (typeof pusher === 'function') {
+    return pusher;
+    
+  } else {
+    return function(
+      baseVersion: K,
+      update?: V,
+    ): PPushed<K, V> {
 
-    return update ?
-      pusherM.push(baseVersion, update) :
-      pusherM.pull(baseVersion);
+      return update ?
+        pusher.push(baseVersion, update) :
+        pusher.pull(baseVersion);
+    }
   }
 }

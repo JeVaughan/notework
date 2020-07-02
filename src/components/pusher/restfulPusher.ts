@@ -1,33 +1,29 @@
 
-import { PusherFn } from "./Push";
-import { Pushed } from "./Pushed";
+import { Json, writeJson } from "../../util/json";
+import { PusherFn, Pushed } from "./Push";
+import { VERSION } from "./pusherEndpoint";
 
-export function restfulPusher(
+export function restfulPusher<T extends Json>(
   endpointUrl: string,
-): PusherFn<string, any> {
+): PusherFn<string, T> {
 
   return function(
     baseVersion: string, 
-    update?: string
-  ): Promise<Pushed<string, any>> {
+    update?: T
+  ): Promise<Pushed<string, T>> {
     
-    const ver: string = encodeURIComponent(baseVersion);
-    const method: string = update ? 'POST' : 'GET';
+    const version: string = encodeURIComponent(baseVersion);
+    const method: string = update === undefined ? 'GET' : 'POST';
 
     const http = new XMLHttpRequest();
-    http.open(method, `https://${endpointUrl}?ver=${ver}`, true);
+    http.open(method, `https://${endpointUrl}?${VERSION}=${version}`, true);
     http.setRequestHeader("Content-Type", "application/json");
     
-    return new Promise<Pushed<string, any>>(
+    return new Promise<Pushed<string, T>>(
       function(resolve, reject): void {
-        http.onload = _ => resolve(JSON.parse(http.response));
+        http.onload = _ => resolve(http.response);
         http.onerror = _ => reject();
-
-        http.send(
-          update ? 
-            JSON.stringify(update) :
-            undefined
-        );
+        http.send(writeJson(update));
       }
     );
   };
