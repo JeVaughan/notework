@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { Map, OrderedSet } from 'immutable';
 
-import { Store, Action } from '../../store/Store';
+import { Store, Action } from './simpleStore';
 import { NoteAst } from '../notes/NoteAst';
 import { PusherM } from './Push';
 import { mapPusher } from './mapPusher';

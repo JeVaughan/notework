@@ -1,6 +1,8 @@
 
 import { Map, OrderedSet } from 'immutable';
-import { Action } from '../../store/Store';
+
+import { Action } from '../../store/Actions';
+
 import { NoteAst } from './NoteAst';
 
 export type NotebookStore = {

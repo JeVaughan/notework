@@ -1,43 +1,18 @@
 import React, { useContext, Context, useMemo, useState } from "react";
-import { Map } from 'immutable';
 
-import { objectFromMap } from "../util/objectFromMap";
-import { JsonMap } from "../util/JsonMap";
+import { Pusher } from "../components/pusher/Push";;
+import { simplifyPusher } from "../components/pusher/simplifyPusher";
+import { mapPromise } from "../util/mapPromise";
 
-import { bindDispatch, ActionCreator, BoundCreator } from "./ActionCreator";
-import { Store } from "./Store";
+import { ActionCreator, ActionBinder } from "./Actions";
 
 type StoreHeader<S> = {
   contents?: S,
-  binder?: <P extends []> (fn: ActionCreator<S, P>) => BoundCreator<P>,
+  binder?: ActionBinder<S>,
 };
 
 const StoreContext: Context<StoreHeader<any>>
   = React.createContext<StoreHeader<any>>({});
-
-export type StoreMappings<S> = { 
-  selectors?: JsonMap<(state: S) => any>, 
-  actions?: JsonMap<ActionCreator<S, any>>, 
-};
-
-export function mapStore<S, P>(Component: any, mappings: StoreMappings<S>) {
-  const selectors = Map(mappings.selectors);
-
-  return function(providedProps: any) {
-    const { contents, binder } = useContext(StoreContext)!;
-
-    const bindings: Map<string, BoundCreator<any>> = useMemo(
-      () => Map(mappings.actions).map(binder),
-      [ binder ]
-    );
-
-    return <Component 
-      {...objectFromMap(selectors.map(fn => fn(contents)))}
-      {...objectFromMap(bindings)}
-      {...providedProps} 
-    />;
-  }
-}
 
 export function useStore<S>(...selectors: ((state: S) => any)[]): any[] {
   const { contents } = useContext(StoreContext)!;
@@ -50,23 +25,34 @@ export function useActions<S>(...actions: ActionCreator<S, any>[]): any[] {
 }
 
 export type MapStoreProps<S> = { 
-  store: Store<S> 
+  state0?: S,
+  pusher: Pusher<any, S>,
   children?: any,
 };
 
-
 // TODO update with local store, selectors, and routing.
-export function MapStore<S>({ store, children }: MapStoreProps<S>) {
-  const [contents, setContents] = useState<S>(store.contents());
+export function MapStore<S>({ state0, pusher, children }: MapStoreProps<S>) {
+  const simplified = simplifyPusher(pusher);
+  const initialGet = simplified();
 
-  function binder<P extends []>(creator: ActionCreator<S, P>): BoundCreator<P> {
-    return function(...args: P) {
-      console.log('Dispatching: %s(%s).', creator.name, JSON.stringify(args))
-      setContents(store.dispatch(creator(...args)).contents());
-    }
-  }
+  const [contents, setContents] = useState<S>(
+    initialGet instanceof Promise ?
+      state0 : initialGet
+  );
+
+  const handleResult = mapPromise(setContents);
+
+  if (initialGet instanceof Promise)
+    handleResult(initialGet);
   
-  return <StoreContext.Provider value={{contents, binder}}>
+  const binder: ActionBinder<S> = 
+    <P extends []> (creator: ActionCreator<S, P>) => 
+      (...args: P) => {
+        console.log('Dispatching: %s(%s).', creator.name, JSON.stringify(args))
+        handleResult(simplified(creator(...args)(contents)));
+      }
+      
+  return <StoreContext.Provider value={{ contents, binder }}>
     {children}
   </StoreContext.Provider>
 }

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Map, List, OrderedSet } from 'immutable';
+import React from 'react';
+import { Map, OrderedSet } from 'immutable';
 
 import { MapStore } from '../store/MapStore';
-import { Store } from '../store/Store';
 import { Notebook } from './notes/Notebook';
 import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
 
 import './App.css';
 import { deserialise, NoteAst } from './notes/NoteAst';
+import { varPusher } from './pusher/varPusher';
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
 <nb>Table of Contents
@@ -45,10 +45,10 @@ const TEST_NOTEBOOK: NotebookStore = {
   notes: Map<NoteAst>({ page1, page2, page3 }), 
 };
 
-const store = new Store(TEST_NOTEBOOK);
+const pusher = varPusher(TEST_NOTEBOOK);
 
 export default function App() {
-  return <MapStore store={store}>
+  return <MapStore pusher={pusher}>
     <Notebook />
   </MapStore>;
 }

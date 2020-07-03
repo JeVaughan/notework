@@ -1,18 +1,22 @@
 import { List } from "immutable";
 
-export type ObjectMapFn<O, T> =
-  <M extends keyof O> (
-    memberId: M,
-    value: O[M]
-  ) => T;
 
-export function objectEntryList<O extends {}, T>(
-  objectMap: O,
-  mapFn: ObjectMapFn<O, T>
-): List<T> {
+export function mapObject<O, T>(
+  objectMap: { [K in keyof O]: T<O[K]> },
+  mapFn: <K extends keyof O> (t: T<O[K]>, k: K) => O[K]
+): O {
 
-  return List(Object.keys(objectMap)).map(
-    (key: string) => 
-      mapFn(key, objectMap[key])
-  )
+  // Some implmentation
 }
+
+const listsObject = {
+  a: List([1, 2, 3]),
+  b: List(["hello", "there"]),
+};
+
+const headsObject = mapObject<
+  { a: number, b: string }, List
+>(
+  listsObject, 
+  list => list.get(0)!
+);

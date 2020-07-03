@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { Action } from "../../store/Store";
+import { Action } from "../../store/Actions";
 
 export type NoteNav = { selected: List<number> };
 

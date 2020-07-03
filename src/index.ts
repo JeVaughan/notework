@@ -1,7 +1,26 @@
 import * as electron from 'electron';
+import express from 'express';
 import IconPath from './images/edit-icon_1920.png';
 
-// import express from 'express';
+
+// ---------------------- //
+// --- Express Server --- //
+// ---------------------- //
+
+const SERVER_PORT: number = 3000;
+
+const expressApp = express();
+
+// expressApp.use('/', restfulFs(process.cwd() + "\\local\\"));
+
+expressApp.listen(SERVER_PORT, () => {
+  console.log(`Express server running on port ${SERVER_PORT}.`);
+});
+
+
+// ----------------------- //
+// --- Electron Window --- //
+// ----------------------- //
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 
@@ -10,14 +29,14 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   electron.app.quit();
 }
 
-const createWindow = () => {
+const APP_ICON: electron.NativeImage = 
+  electron.nativeImage.createFromPath(IconPath)
+    .resize({ width: 32, height: 32 });
 
-  const icon: electron.NativeImage = 
-    electron.nativeImage.createFromPath(IconPath)
-      .resize({ width: 32, height: 32 });
-
+function createWindow() {
   const window = new electron.BrowserWindow({
-    height: 600, width: 800, show: false, icon
+    height: 600, width: 800, 
+    show: false, icon: APP_ICON
   });
 
   window.once('ready-to-show', () => {

@@ -1,9 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import * as react from 'react';
 import { List } from 'immutable';
 
 import { useStore, useActions } from '../../store/MapStore';
-import { Action } from '../../store/Store';
 
 import { NoteMd } from './NoteMd';
 import { NoteAst, updateHash } from './NoteAst';

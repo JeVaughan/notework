@@ -15,7 +15,7 @@ export interface PusherM<K, V> {
 };
 
 export type PusherFn<K, V> = (
-  baseVersion: K,
+  baseVersion?: K,
   update?: V,
 ) => PPushed<K, V>;
 
@@ -42,7 +42,7 @@ class PusherFnClass<K, V>
     return this.pushFunc(baseVersion, update);
   }
 
-  pull(baseVersion: K): PPushed<K, V> {
+  pull(baseVersion?: K): PPushed<K, V> {
     return this.pushFunc(baseVersion);
   }
 
@@ -68,11 +68,11 @@ export function pusherFn<K, V>(
     
   } else {
     return function(
-      baseVersion: K,
+      baseVersion?: K,
       update?: V,
     ): PPushed<K, V> {
 
-      return update ?
+      return update !== undefined ?
         pusher.push(baseVersion, update) :
         pusher.pull(baseVersion);
     }

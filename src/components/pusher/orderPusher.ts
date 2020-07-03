@@ -19,11 +19,9 @@ export function orderPusher<K, V>(
         return { error: `Ignoring older version ${newVersion}.` }
       }
     );
-
-    if (order(latestVersion, baseVersion) == 0)
-      return handleResult(basePusher.push(baseVersion, update));
-    else
-      return { newVersion: latestVersion };
+    return order(latestVersion, baseVersion) == 0 ?
+      handleResult(basePusher.push(baseVersion, update)) :
+      { newVersion: latestVersion };
   }
 
   return pusherM(pusherFn, () => basePusher.close());
