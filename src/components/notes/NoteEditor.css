@@ -5,9 +5,10 @@
 
   outline: none;
   border-style: none;
-  border-left: slateblue solid 4px;
   
   overflow: hidden;
   resize: none;
+
+  font-size: 16px;
   font-family: 'Ubuntu Mono', monospace;
 }

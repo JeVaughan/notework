@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as react from 'react';
 import { List } from 'immutable';
 
 import { useStore, useActions } from '../../store/MapStore';
+import { getUserSelection } from '../../util/browser/getUserSelection';
 
 import { NoteMd } from './NoteMd';
 import { NoteAst, updateHash } from './NoteAst';
@@ -46,6 +47,14 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
     }
   }
 
+  const onDivClick = useMemo(
+    () => function(_: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+      if (!getUserSelection()) // Let the user select text without focussing
+        setSelected(path)
+      
+    }, [ setSelected, path ]
+  );
+
   const cMarkdown =
     isSelected && setAst ?
       <NoteEditor 
@@ -56,7 +65,7 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
           navigate(nav);
         }}
       /> :
-      <div onClick={() => setSelected(path)}>
+      <div onClick={onDivClick}>
         <NoteMd rawMd={markdown} />
       </div>;
 
