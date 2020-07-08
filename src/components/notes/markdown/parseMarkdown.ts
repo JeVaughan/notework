@@ -2,7 +2,7 @@ import flatten from "../../../util/collections/flatten";
 import { filter } from "../../../util/collections/filter";
 
 import { 
-  thenMap, repeat, takeUntil, oneOf, markType,
+  matches, thenMap, repeat, takeUntil, oneOf, markType,
   wrap, allOf, remaining, parseFn
 } from "./parser";
 
@@ -34,6 +34,8 @@ export const markdown = parseFn(
     repeat<MdNode[]>(
       takeUntil<MdNode>(
         oneOf<MdNode>(
+          markType('crlf', matches('\n')),
+          
           markType('bold', wrap('**')),
           markType('emph', wrap('__')),
           markType('strike', wrap('~~')),

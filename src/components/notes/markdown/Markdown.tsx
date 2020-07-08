@@ -6,6 +6,10 @@ import { JsonMap } from "../../../util/JsonMap";
 import { MdNode, markdown } from "./parseMarkdown";
 import { setOpenFile } from "../NotebookStore";
 
+function Crlf({ node }: any) {
+  return <br />
+}
+
 function Bold({ node }: any) {
   return <strong>
     {node.value}
@@ -96,6 +100,7 @@ function Img({ node }: any) {
 }
 
 const MarkdownComponents: JsonMap<any> = {
+  'crlf': Crlf,
   'bold': Bold,
   'emph': Emph,
   'strike': Strike,
