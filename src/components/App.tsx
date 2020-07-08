@@ -10,21 +10,17 @@ import { deserialise, NoteAst } from './notes/NoteAst';
 import { varPusher } from './pusher/varPusher';
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
-<nb>Table of Contents
+<nb>Bi-directional links like this [[page2]]</nb>
+<nb>**bold** __emph__ ~~strikes~~ ^^HIGHLIGHT^^</nb>
+<nb>Its got MATH $$E = mc^2$$</nb>
+<nb>and images ![Demo Image](https://i.imgur.com/OvMZBs9.jpg)</nb>
 <nb>Implements [GitHub Flavored Markdown](https://github.github.com/gfm/)</nb>
 <nb>Renders actual, "native" React DOM elements</nb>
 <nb>Allows you to escape or skip HTML (try toggling the checkboxes above)</nb>
-<nb>If you escape or skip the HTML, no \`dangerouslySetInnerHTML\` is used! Yay!
-Pretty neat, eh?</nb></nb>
-<nb>Tables?<nb>|Feature   |Support |
-| --------- | ------- |
-| tables    | ✔ |
-| alignment | ✔ |
-| wewt      | ✔ |</nb></nb>
-<nb>More info?
+<nb>If you  \`dangerouslySetInnerHTML\` is used! Yay! Pretty neat, eh?</nb>
+<nb>New lines?
 Read usage information and more on [GitHub](//github.com/rexxars/react-markdown)
----------------
-A component by [Espen Hovlandsdal](https://espen.codes/)</nb></nb>`);
+A component by [Espen Hovlandsdal](https://espen.codes/)</nb>`);
 
 const page2: NoteAst = deserialise(`<nb>page2
 <nb>this is another page dumbass</nb></nb>`);

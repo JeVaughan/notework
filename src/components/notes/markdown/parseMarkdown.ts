@@ -9,8 +9,25 @@ import {
 export type MdNode = 
   string |
   { type: string, value: string } |
-  { type: string, value: { text: string, url: string } } |
-  { type: string, value: [string, string] };
+  { type: string, value: { text: string, url: string } };
+
+function toLinkValue(args: string | string[]): { text: string, url: string } {
+  if (args instanceof Array) {
+    if (args.length === 2) {
+      const [text, url] = args;
+      return { text, url };
+
+    } else if (args.length === 1) {
+      const [text] = args;
+      return { text, url: text };
+    }
+
+  } else if (typeof args === 'string') {
+    return { text: args, url: args };
+  }
+
+  return { text: 'Malformed Link', url: 'help/page' };
+}
 
 export const markdown = parseFn(
   thenMap(
@@ -20,21 +37,34 @@ export const markdown = parseFn(
           markType('bold', wrap('**')),
           markType('emph', wrap('__')),
           markType('strike', wrap('~~')),
+          markType('highlight', wrap('^^')),
+          markType('math', wrap('$$')),
 
           markType('block', wrap('```')),
           markType('code', wrap('`')),
 
-          markType('ref', wrap('[[', ']]')),
+          markType('ref', 
+            oneOf(
+              thenMap(
+                wrap('[[', ']]'),
+                toLinkValue
+              ),
+              thenMap(
+                allOf(wrap('[[', ']]'), wrap('(', ')')), 
+                toLinkValue
+              )
+            )
+          ),
 
           markType('link', thenMap(
               allOf(wrap('[', ']'), wrap('(', ')')), 
-              ([text, url]) => ({text, url})
+              toLinkValue
             )
           ),
 
           markType('img', thenMap(
-            allOf(wrap('![', ']'), wrap('(', ')')), 
-              ([text, url]) => ({text, url})
+              allOf(wrap('![', ']'), wrap('(', ')')), 
+              toLinkValue
             )
           ),
         )
