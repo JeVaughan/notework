@@ -1,11 +1,10 @@
 import React, { useMemo } from "react";
 
-import { useActions } from "../../../store/MapStore";
 import { JsonMap } from "../../../util/JsonMap";
 
 import { MdNode, markdown } from "./parseMarkdown";
 import { Math, MathBlock } from "./RenderMath";
-import { setOpenFile } from "../NotebookStore";
+import { Reference } from "./RenderReference";
 
 function Crlf({ node }: any) {
   return <br />
@@ -47,31 +46,6 @@ function Code({ node }: any) {
   </span>;
 }
 
-function Ref({ node }: any) {
-  const { text, url } = node.value;
-
-  const [ doSetOpenFile ] = useActions(setOpenFile);
-
-  const braceStyle = {
-    cursor: 'pointer',
-    color: 'lightgrey'
-  };
-
-  const linkStyle = {
-    textDecoration: 'underline', 
-    color: 'blue'
-  };
-
-  function openNote(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
-    doSetOpenFile(url);
-    event.stopPropagation();
-  }
-
-  return <span style={braceStyle} title={url} onClick={openNote}>
-    [[<span style={linkStyle}>{text}</span>]]
-  </span>;
-}
-
 function Link({ node }: any) {
   const { text, url } = node.value;
 
@@ -104,7 +78,7 @@ const MarkdownComponents: JsonMap<any> = {
   'math': Math,
   'codeblock': CodeBlock,
   'code': Code,
-  'ref': Ref,
+  'ref': Reference,
   'link': Link,
   'img': Img,
 };

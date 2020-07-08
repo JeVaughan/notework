@@ -1,0 +1,13 @@
+
+.refBrace {
+  cursor: pointer;
+  color: lightgrey;
+}
+
+.refText {
+  color: blue;
+}
+
+.refText:hover {
+  text-decoration: underline;
+}
