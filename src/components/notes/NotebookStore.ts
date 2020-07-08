@@ -1,14 +1,23 @@
 
-import { Map, OrderedSet } from 'immutable';
+import { Map, OrderedSet, List } from 'immutable';
 
 import { Action } from '../../store/Actions';
 
 import { NoteAst } from './NoteAst';
 
 export type NotebookStore = {
+  // user information
+  // - name, email, 
+  // user app preferences
+  // - language, display, hot-keys, 
+  // UI / display data
   history: OrderedSet<string | undefined>,
   pinned: OrderedSet<string>,
+  // statistical project data
+  // - network data
+  // files and image metadata
   notes: Map<string, NoteAst>,
+  // references: Map<string, List<string>>
 };
 
 export const EMPTY_NOTEBOOK: NotebookStore = {
