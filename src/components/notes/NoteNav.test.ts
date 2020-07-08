@@ -5,6 +5,12 @@ function test(a: number[], b: number[]): boolean {
   return selectorIsSelected(List(a))({ selected: List(b) });
 }
 
+it('selectorIsSelected should never be true when nothing is selected', () => {
+  expect(selectorIsSelected(List([]))({})).toBeFalsy();
+  expect(selectorIsSelected(List([ 0 ]))({})).toBeFalsy();
+  expect(selectorIsSelected(<List<number>> undefined)({})).toBeFalsy();
+});
+
 it('selectorIsSelected should detect empty list equality', () => {
   expect(test([], [])).toBeTruthy();
 });

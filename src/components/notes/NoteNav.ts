@@ -2,7 +2,7 @@ import { List } from "immutable";
 import { Action } from "../../store/Actions";
 import { allEqual } from "../../util/collections/allEqual";
 
-export type NoteNav = { selected: List<number> };
+export type NoteNav = { selected?: List<number> };
 
 export function selectorIsSelected(path: List<number>) {
   return function({ selected }: NoteNav): boolean {
@@ -17,12 +17,12 @@ export function actionSetSelected(selected: List<number>): Action<NoteNav> {
 export function actionNavigate(nav?: number): Action<NoteNav> {
   return store => {
     const { selected } = store;
-    if (selected && selected.size && nav) {
+    if (selected && selected.size) {
       return {
         ...store,
-        selected: selected.pop().push(
-          selected.last(0) + nav
-        )
+        selected: typeof nav === 'number' ?
+          selected.pop().push(selected.last(0) + nav) :
+          undefined
       }
     }
   }
