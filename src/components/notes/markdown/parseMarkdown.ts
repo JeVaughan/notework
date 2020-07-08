@@ -35,14 +35,16 @@ export const markdown = parseFn(
       takeUntil<MdNode>(
         oneOf<MdNode>(
           markType('crlf', matches('\n')),
-          
+
           markType('bold', wrap('**')),
           markType('emph', wrap('__')),
           markType('strike', wrap('~~')),
           markType('highlight', wrap('^^')),
+
+          markType('mathblock', wrap('$$$')),
           markType('math', wrap('$$')),
 
-          markType('block', wrap('```')),
+          markType('codeblock', wrap('```')),
           markType('code', wrap('`')),
 
           markType('ref', 

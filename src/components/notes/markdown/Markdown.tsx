@@ -4,6 +4,7 @@ import { useActions } from "../../../store/MapStore";
 import { JsonMap } from "../../../util/JsonMap";
 
 import { MdNode, markdown } from "./parseMarkdown";
+import { Math, MathBlock } from "./RenderMath";
 import { setOpenFile } from "../NotebookStore";
 
 function Crlf({ node }: any) {
@@ -34,13 +35,7 @@ function Highlight({ node }: any) {
   </span>
 }
 
-function Math({ node }: any) {
-  return <>
-    Debug Math: ({node.value})
-  </>;
-}
-
-function Block({ node }: any) {
+function CodeBlock({ node }: any) {
   return <code>
     {node.value}
   </code>;
@@ -105,8 +100,9 @@ const MarkdownComponents: JsonMap<any> = {
   'emph': Emph,
   'strike': Strike,
   'highlight': Highlight,
+  'mathblock': MathBlock,
   'math': Math,
-  'block': Block,
+  'codeblock': CodeBlock,
   'code': Code,
   'ref': Ref,
   'link': Link,
