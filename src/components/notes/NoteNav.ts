@@ -1,12 +1,12 @@
 import { List } from "immutable";
 import { Action } from "../../store/Actions";
+import { allEqual } from "../../util/collections/allEqual";
 
 export type NoteNav = { selected: List<number> };
 
 export function selectorIsSelected(path: List<number>) {
   return function({ selected }: NoteNav): boolean {
-    return selected && path.size === selected.size &&
-      path.every((val, idx) => val == selected.get(idx))
+    return selected && allEqual(path, selected);
   }
 }
 
