@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown/with-html';
+import { Markdown } from './markdown/Markdown';
 
 export type NoteMdProps = {
   className?: string,
@@ -7,8 +8,5 @@ export type NoteMdProps = {
 };
 
 export function NoteMd({ className, rawMd }: NoteMdProps) {
-  return <ReactMarkdown 
-    className={className}
-    source={rawMd}
-  />
+  return <Markdown source={rawMd} />
 }
