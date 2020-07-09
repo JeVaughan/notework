@@ -1,0 +1,9 @@
+@import "../../styles/_index";
+
+.NoteBlock {
+  margin: $spacing-s 0 $spacing-s 0;
+}
+
+ul.NoteBlock {
+  padding-left: $spacing-l;
+}

@@ -23,6 +23,15 @@
   box-shadow: 0 0 $spacing-s 0 rgba(0,0,0,0.5);
 }
 
+.Navigator > * {
+  margin: $spacing-xs;
+  padding: $spacing-xxs;
+}
+
+.Navigator > hr {
+  padding: 0;
+}
+
 .Navigator > span {
   -ms-user-select: none;
   user-select: none;
@@ -43,5 +52,6 @@
 }
 
 .NavButton:hover {
-  background-color: $background-color;
+  color: $background-color;
+  background-color: $primary-color;
 }

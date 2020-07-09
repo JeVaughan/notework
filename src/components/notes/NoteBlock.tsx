@@ -10,7 +10,7 @@ import { NoteAst, updateHash } from './NoteAst';
 import { NoteEditor } from './NoteEditor';
 import { NoteNav, selectorIsSelected, actionSetSelected, actionNavigate } from './NoteNav';
 
-import './NoteBlock.css';
+import './NoteBlock.scss';
 
 export type NoteBlockProps = {
   path?: List<number>,
@@ -70,7 +70,7 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
       </div>;
 
   // Recurse down children in AST.
-  const cListItems = children && children.size && <ul>{
+  const cListItems = children && children.size && <ul className="NoteBlock">{
     children.map((child, idx) =>
       <NoteBlock
         key={child.hashValue} 
@@ -83,6 +83,8 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
 
   // Wrap non-root nodes in list item tags.
   return path && path.size ? 
-    <li>{cMarkdown} {cListItems}</li> :
+    <li className="NoteBlock">
+      {cMarkdown} {cListItems}
+    </li> :
     <>{cMarkdown} {cListItems}</>;
 }
