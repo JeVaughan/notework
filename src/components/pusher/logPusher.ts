@@ -6,13 +6,13 @@ import { PusherFn, PPushed, Pushed } from "./Push";
 
 export function dfltLogCall(rawKey: any, rawValue: any): void {
   const key = writeJson(rawKey), val = writeJson(rawValue);
-  console.trace(`Pusher: Call(key=${key}, val=${val})`);
+  console.debug(`Pusher: Call(key=${key}, val=${val})`);
 }
 
 export function dfltLogPushed(pushed: Pushed<any, any>): void {
   const { newVersion, newValue } = pushed;
   const key = writeJson(newVersion), value = writeJson(newValue);
-  console.trace(`Pusher: Return(key=${key}, val=${value})`);
+  console.debug(`Pusher: Return(key=${key}, val=${value})`);
 }
 
 export function logPusher<K, V>(
