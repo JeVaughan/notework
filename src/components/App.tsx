@@ -8,6 +8,7 @@ import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
 import './App.css';
 import { deserialise, NoteAst } from './notes/NoteAst';
 import { varPusher } from './pusher/varPusher';
+import { logPusher } from './pusher/logPusher';
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
 <nb>Bi-directional links like this [[page2]]</nb>
@@ -41,7 +42,7 @@ const TEST_NOTEBOOK: NotebookStore = {
   notes: Map<NoteAst>({ page1, page2, page3 }), 
 };
 
-const pusher = varPusher(TEST_NOTEBOOK);
+const pusher = logPusher(varPusher(TEST_NOTEBOOK));
 
 export default function App() {
   return <MapStore pusher={pusher}>

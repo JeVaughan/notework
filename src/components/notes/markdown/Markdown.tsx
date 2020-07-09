@@ -92,7 +92,11 @@ function SwitchComponent({ node }: any) {
 }
 
 export function Markdown({ source }: { source: string }) {
-  const nodes: MdNode[] = useMemo(() => markdown(source || ''), [source]);
+  const nodes: MdNode[] = useMemo(
+    () => markdown(source || ''), 
+    [ source ]
+  );
+  
   return <>{
     nodes.map(
       (node, index) => 
