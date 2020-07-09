@@ -13,9 +13,9 @@ const expressApp = express();
 
 // expressApp.use('/', restfulFs(process.cwd() + "\\local\\"));
 
-expressApp.listen(SERVER_PORT, () => {
-  console.log(`Express server running on port ${SERVER_PORT}.`);
-});
+// expressApp.listen(SERVER_PORT, () => {
+//   console.log(`Express server running on port ${SERVER_PORT}.`);
+// });
 
 
 // ----------------------- //
@@ -39,8 +39,10 @@ function createWindow() {
     show: false, icon: APP_ICON
   });
 
+  window.setMenu(null);
+
   window.once('ready-to-show', () => {
-    window.show()
+    window.show();
     window.webContents.openDevTools({ mode: "detach" });
   })
 
