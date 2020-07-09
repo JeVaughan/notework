@@ -6,7 +6,7 @@ import { NotebookStore, setPinned, renameFile, getTargetFilename, isFilePinned }
 import StarFill from '../../images/remixicon/star-fill.svg';
 import StarLine from '../../images/remixicon/star-line.svg';
 
-import './NoteFileHeader.css';
+import './NoteFileHeader.scss';
 
 export function NoteFileHeader() {
 

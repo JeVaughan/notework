@@ -5,6 +5,18 @@ module.exports = [
     use: 'node-loader',
   },
   {
+    // Source: https://webpack.js.org/loaders/sass-loader/
+    test: /\.s[ac]ss$/i,
+    use: [
+      // Creates `style` nodes from JS strings
+      'style-loader',
+      // Translates CSS into CommonJS
+      'css-loader',
+      // Compiles Sass to CSS
+      'sass-loader',
+    ],
+  },
+  {
     test: /\.(m?js|node)$/,
     parser: { amd: false },
     use: {

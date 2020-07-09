@@ -5,10 +5,11 @@ import { MapStore } from '../store/MapStore';
 import { Notebook } from './notes/Notebook';
 import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
 
-import './App.css';
 import { deserialise, NoteAst } from './notes/NoteAst';
 import { varPusher } from './pusher/varPusher';
 import { logPusher } from './pusher/logPusher';
+
+import './App.scss';
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
 <nb>Bi-directional links like this [[page2]]</nb>

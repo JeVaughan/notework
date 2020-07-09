@@ -1,3 +1,4 @@
+@import "../../styles/_index";
 
 .NoteEditor {
   width: 100%;
@@ -8,6 +9,9 @@
   
   overflow: hidden;
   resize: none;
+
+  color: $text-color;
+  background-color: $background-color;
 
   font-size: 16px;
   font-family: 'Ubuntu Mono', monospace;

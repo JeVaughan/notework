@@ -6,7 +6,7 @@ import { useStore, useActions } from '../../store/MapStore';
 import { setOpenFile, NotebookStore, getTargetFilename } from './NotebookStore';
 import { NoteFile } from './NoteFile';
 
-import './Notebook.css';
+import './Notebook.scss';
 
 export type NavButtonProps = {
   name: string,

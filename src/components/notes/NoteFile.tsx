@@ -6,7 +6,7 @@ import { getFilebody, NotebookStore, writeFile } from './NotebookStore';
 import { NoteBlock } from './NoteBlock';
 import { NoteFileHeader } from './NoteFileHeader';
 
-import './NoteFile.css';
+import './NoteFile.scss';
 
 export function NoteFile() {
   const [ast] = useStore<NotebookStore>(getFilebody);

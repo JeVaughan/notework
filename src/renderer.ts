@@ -30,7 +30,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-import './renderer.css';
+import './renderer.scss';
 import './fonts/font-face.css';
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');

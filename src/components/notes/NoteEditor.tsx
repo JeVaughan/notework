@@ -1,6 +1,6 @@
 import React, { useState, useMemo, ChangeEvent, KeyboardEvent, useEffect } from 'react';
 
-import './NoteEditor.css';
+import './NoteEditor.scss';
 
 export type NoteEditorProps = {
   rawMd?: string,
@@ -24,8 +24,6 @@ export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
   }
 
   function finishEdit(update: boolean = true) {
-    console.log('NotePane: finishing edit, updating = %s', update);
-
     if (update && onUpdate) 
       onUpdate(updateMd);
   }
@@ -37,6 +35,9 @@ export function NoteEditor({ rawMd, onUpdate }: NoteEditorProps) {
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === "Enter" && event.ctrlKey) {
       finishEdit();
+      event.stopPropagation();
+
+    } else if (event.key === "Enter") {
       event.stopPropagation();
 
     } else if (event.key === "Escape") {

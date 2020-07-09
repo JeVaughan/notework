@@ -1,5 +1,7 @@
+@import "../../styles/_index";
 
 .NoteFileHeader {
+  padding: $spacing-xxs;
   display: inline-block;
   flex-direction: row;
 }
@@ -13,6 +15,6 @@
 }
 
 .NoteFileHeader > span {
-  font-size: 32px;
-  margin: 6px;
+  font-size: $spacing-xl;
+  margin: $spacing-s;
 }
