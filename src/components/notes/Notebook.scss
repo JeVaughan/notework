@@ -24,6 +24,8 @@
 }
 
 .Navigator > * {
+  font-size: medium;
+
   margin: $spacing-xs;
   padding: $spacing-xxs;
 }
@@ -33,6 +35,9 @@
 }
 
 .Navigator > span {
+  text-decoration: underline;
+  font-size: large;
+
   -ms-user-select: none;
   user-select: none;
 }
