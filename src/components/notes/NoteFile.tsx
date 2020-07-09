@@ -3,6 +3,7 @@ import React from 'react';
 import { useStore, useActions } from '../../store/MapStore';
 
 import { getFilebody, NotebookStore, writeFile } from './NotebookStore';
+import { BacklinkList } from './BacklinkList';
 import { NoteBlock } from './NoteBlock';
 import { NoteFileHeader } from './NoteFileHeader';
 
@@ -16,6 +17,8 @@ export function NoteFile() {
     <NoteFileHeader />
     <div className='NoteFileView'>
       <NoteBlock ast={ast} setAst={setAst} />
+      <hr />
+      <BacklinkList />
     </div>
   </div>;
 };

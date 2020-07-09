@@ -3,7 +3,7 @@ import React from "react";
 import { useActions } from "../../../store/MapStore";
 import { setOpenFile } from "../NotebookStore";
 
-import './RenderReference.css';
+import './RenderReference.scss';
 
 export function Reference({ node }: any) {
   const { text, url } = node.value;

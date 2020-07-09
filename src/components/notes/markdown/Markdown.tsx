@@ -5,34 +5,8 @@ import { JsonMap } from "../../../util/JsonMap";
 import { MdNode, markdown } from "./parseMarkdown";
 import { Math, MathBlock } from "./RenderMath";
 import { Reference } from "./RenderReference";
+import { Crlf, Bold, Emph, Strike, Highlight } from "./RenderRichText";
 
-function Crlf({ node }: any) {
-  return <br />
-}
-
-function Bold({ node }: any) {
-  return <strong>
-    {node.value}
-  </strong>;
-}
-
-function Emph({ node }: any) {
-  return <em>
-    {node.value}
-  </em>
-}
-
-function Strike({ node }: any) {
-  return <span style={{ textDecoration: 'line-through' }}>
-    {node.value}
-  </span>
-}
-
-function Highlight({ node }: any) {
-  return <span style={{ background: 'lightblue' }}>
-    {node.value}
-  </span>
-}
 
 function CodeBlock({ node }: any) {
   return <code>

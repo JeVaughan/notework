@@ -39,7 +39,7 @@ function createWindow() {
     show: false, icon: APP_ICON
   });
 
-  window.setMenu(null);
+  // window.setMenu(null);
 
   window.once('ready-to-show', () => {
     window.show();

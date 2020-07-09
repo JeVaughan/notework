@@ -1,0 +1,16 @@
+@import "../../../styles/_index";
+
+.refBrace {
+  font-stretch: condensed;
+  cursor: pointer;
+  color: $bgdark-color;
+}
+
+.refText {
+  font-stretch: normal;
+  color: $link-color;
+}
+
+.refText:hover {
+  text-decoration: underline;
+}

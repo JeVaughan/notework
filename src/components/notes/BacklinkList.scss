@@ -1,0 +1,15 @@
+@import "../../styles/_index";
+
+.backlinkList {
+  padding: $spacing-s;
+}
+
+.backlinkDetail {
+  cursor: pointer;
+  font-size: smaller;
+  color: $bgdark-color;
+}
+
+.backlinkDetail:hover {
+  text-decoration: underline;
+}

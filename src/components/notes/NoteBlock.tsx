@@ -49,7 +49,7 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
 
   const onDivClick = useMemo(
     () => function(_: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-      if (!getUserSelection()) // Let the user select text without focussing
+      if (!getUserSelection() && setAst) // Let the user select text without focussing
         setSelected(path)
       
     }, [ setSelected, path ]

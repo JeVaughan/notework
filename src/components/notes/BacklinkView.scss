@@ -1,0 +1,11 @@
+@import "../../styles/_index";
+
+.backlinkView {
+  margin: $spacing-s;
+}
+
+.backlinkContainer {
+  padding: $spacing-xs;
+  margin-top: $spacing-xs;
+  background-color: $bgmedium-color;
+}
