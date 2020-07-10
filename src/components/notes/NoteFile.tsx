@@ -16,7 +16,9 @@ export function NoteFile() {
   return <div className='NoteFile'>
     <NoteFileHeader />
     <div className='NoteFileView'>
-      <NoteBlock ast={ast} setAst={setAst} />
+      <div className='NoteFileRoot'>
+        <NoteBlock ast={ast} setAst={setAst} />
+      </div>
       <hr />
       <BacklinkList />
     </div>
