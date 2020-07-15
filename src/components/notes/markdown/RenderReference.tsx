@@ -15,7 +15,9 @@ export function Reference({ node }: any) {
     event.stopPropagation();
   }
 
-  return <span className='refBrace' title={url} onClick={openNote}>
-    [[<span className='refText'>{text}</span>]]
+  return <span className='refBrace' title={url}>
+    [[<span className='refText' onClick={openNote}>
+      {text}
+    </span>]]
   </span>;
 }

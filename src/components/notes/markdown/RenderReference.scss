@@ -2,11 +2,11 @@
 
 .refBrace {
   font-stretch: condensed;
-  cursor: pointer;
   color: $bgdark-color;
 }
 
 .refText {
+  cursor: pointer;
   font-stretch: normal;
   color: $link-color;
 }
