@@ -1,32 +1,27 @@
 import React from 'react';
 
-import { List } from 'immutable';
-
 import { Store } from '../../store/Store';
 
 import { NoteNav } from './NoteNav';
-import { NoteAst, deserialise } from './NoteAst';
+import { Backlink } from './stores/NoteEditor';
 import { NoteBlock } from './NoteBlock';
 import { Reference } from './markdown/RenderReference';
 
 import './BacklinkView.scss';
 
-export type Backlink = {
-  note: string,
-  path: number[],
-  content: NoteAst,
-};
-
-export function backlinkKey({ note, path }: Backlink) {
-  return note + '-' + path.join('-');
+export function backlinkKey({ filename, path }: Backlink) {
+  return filename + '-' + path.join('-');
 }
 
-export function BacklinkView(
-  { note, store, path, content }: Backlink & { store: Store<NoteNav> }
-) {
+export type BacklinkViewProps = {
+  backlink: Backlink,
+  store: Store<NoteNav>,
+}
 
+export function BacklinkView({ backlink, store }: BacklinkViewProps) {
+  const { filename, content } = backlink;
   return <div className="backlinkView">
-    <Reference node={{ value: { text: note, url: note } }} />:
+    <Reference node={{ value: { text: filename, url: filename } }} />:
     <div className="backlinkContainer">
       <NoteBlock store={store} ast={content} />
     </div>

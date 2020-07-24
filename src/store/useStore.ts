@@ -1,4 +1,4 @@
-import { useState, useMemo, useReducer } from "react";
+import { useState, useMemo } from "react";
 import { Store, store } from "./Store";
 
 export function useStore<S>(

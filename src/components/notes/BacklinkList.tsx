@@ -4,16 +4,17 @@ import { Store } from '../../store/Store';
 
 import { NoteNav } from './NoteNav';
 import { deserialise } from './NoteAst';
-import { Backlink, BacklinkView, backlinkKey } from './BacklinkView';
+import { Backlink } from './stores/NoteEditor';
+import { BacklinkView, backlinkKey } from './BacklinkView';
 
 import './BacklinkList.scss';
 
 
 const debugBacklinks: Backlink[] = [
-  { note: 'page1', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { note: 'page2', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { note: 'page3', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { note: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page1', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page2', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page3', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
 ]
 
 export function BacklinkList(
@@ -42,8 +43,9 @@ export function BacklinkList(
       (backlink: Backlink) => 
         <BacklinkView 
           key={backlinkKey(backlink)} 
+          backlink={backlink}
           store={store}
-          {...backlink} />
+        />
     )}
 
     <div className="backlinkDetail" onClick={searchReferences}>
