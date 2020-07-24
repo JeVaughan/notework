@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+import { Store } from '../../store/Store';
+
+import { NoteNav } from './NoteNav';
 import { deserialise } from './NoteAst';
 import { Backlink, BacklinkView, backlinkKey } from './BacklinkView';
 
@@ -13,7 +16,9 @@ const debugBacklinks: Backlink[] = [
   { note: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
 ]
 
-export function BacklinkList() {
+export function BacklinkList(
+  { store }: { store: Store<NoteNav> }
+) {
   const backlinks = debugBacklinks;
 
   const [collapsed, setCollapsed] = useState(false);
@@ -37,6 +42,7 @@ export function BacklinkList() {
       (backlink: Backlink) => 
         <BacklinkView 
           key={backlinkKey(backlink)} 
+          store={store}
           {...backlink} />
     )}
 

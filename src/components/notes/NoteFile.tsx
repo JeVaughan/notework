@@ -1,28 +1,32 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 
-import { useStore, useActions, MapStore } from '../../store/MapStore';
+import { Store } from '../../store/Store';
+import { fromStore } from '../../store/fromStore';
+import { bindAction } from '../../store/bindAction';
+import { useStore } from '../../store/useStore';
 
 import { getFilebody, NotebookStore, writeFile } from './NotebookStore';
 import { BacklinkList } from './BacklinkList';
+import { NoteNav } from './NoteNav';
 import { NoteBlock } from './NoteBlock';
 import { NoteFileHeader } from './NoteFileHeader';
 
 import './NoteFile.scss';
 
-export function NoteFile({ store }: { store: NotebookStore }) {
-  const [ast] = useStore<NotebookStore>(getFilebody);
-  const [setAst] = useActions<NotebookStore>(writeFile);
+export function NoteFile({ store }: { store: Store<NotebookStore> }) {
+  const navStore = useStore<NoteNav>({});
+
+  const ast = fromStore(store, getFilebody);
+  const setAst = bindAction(store, writeFile);
 
   return <div className='NoteFile'>
-    <MapStore>
-      <NoteFileHeader />
-      <div className='NoteFileView'>
-        <div className='NoteFileRoot'>
-          <NoteBlock ast={ast} setAst={setAst} />
-        </div>
-        <hr />
-        <BacklinkList />
+    <NoteFileHeader store={store}/>
+    <div className='NoteFileView'>
+      <div className='NoteFileRoot'>
+        <NoteBlock store={navStore} ast={ast} setAst={setAst} />
       </div>
-    </MapStore>
+      <hr />
+      <BacklinkList store={navStore} />
+    </div>
   </div>;
 };

@@ -1,8 +1,11 @@
 import React, { useMemo } from 'react';
 import { List } from 'immutable';
 
+import { Store } from '../../store/Store';
+import { fromStore } from '../../store/fromStore';
+import { bindAction } from '../../store/bindAction';
+
 import { AdjustableWidthColumns } from '../generic/AdjustableWidthColumns';
-import { useStore, useActions } from '../../store/MapStore';
 import { setOpenFile, NotebookStore, getTargetFilename } from './NotebookStore';
 import { NoteFile } from './NoteFile';
 
@@ -30,15 +33,11 @@ const META_PAGES: List<string> = List([
   'Index'
 ]);
 
-export function Notebook() {
+export function Notebook({ store }: { store: Store<NotebookStore> }) {
 
-  const [ filename, pinned, history ] = useStore(
-    getTargetFilename,
-    ({ pinned }: NotebookStore) => pinned,
-    ({ history }: NotebookStore) => history,
-  );
-
-  const [ doSetOpenFile ] = useActions(setOpenFile);
+  const { pinned, history } = store.state;
+  const filename = fromStore(store, getTargetFilename);
+  const doSetOpenFile = bindAction(store, setOpenFile);
 
   const navButton = useMemo(
     () => (name: string) => 
@@ -68,7 +67,7 @@ export function Notebook() {
 
     right={
       filename ?
-        <NoteFile /> :
+        <NoteFile store={store}/> :
         "Please open a page."
     }
   />;  

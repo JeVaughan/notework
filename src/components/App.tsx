@@ -1,7 +1,7 @@
 import React from 'react';
 import { Map, OrderedSet } from 'immutable';
 
-import { MapStore } from '../store/MapStore';
+import { useStore } from '../store/useStore';
 import { Notebook } from './notes/Notebook';
 import { EMPTY_NOTEBOOK, NotebookStore } from './notes/NotebookStore';
 
@@ -43,10 +43,7 @@ const TEST_NOTEBOOK: NotebookStore = {
   notes: Map<NoteAst>({ page1, page2, page3 }), 
 };
 
-const pusher = logPusher(varPusher(TEST_NOTEBOOK));
-
 export default function App() {
-  return <MapStore pusher={pusher}>
-    <Notebook />
-  </MapStore>;
+  const store = useStore(TEST_NOTEBOOK);
+  return <Notebook store={store}/>;
 }

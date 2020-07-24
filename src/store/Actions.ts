@@ -1,7 +1,7 @@
 
 export type Action<S extends {}> = (s: S) => S | undefined;
 
-export type ActionCreator<S extends {}, Params extends []>
+export type ActionCreator<S extends {}, Params extends any[]>
   = (...args: Params) => Action<S> 
 
 export type ActionMiddleware = 
@@ -12,4 +12,4 @@ export type ActionBinder<S> =
   <P extends []>(creator: ActionCreator<S, P>) =>
     (...args: P) => void;
 
-export type Store<S> = (...actions: Action<S>[]) => S;
+// export type Store<S> = (...actions: Action<S>[]) => S;

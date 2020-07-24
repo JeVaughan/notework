@@ -2,7 +2,10 @@ import React, { useMemo } from 'react';
 import * as react from 'react';
 import { List } from 'immutable';
 
-import { useStore, useActions } from '../../store/MapStore';
+import { Store } from '../../store/Store';
+import { fromStore } from '../../store/fromStore';
+import { bindAction } from '../../store/bindAction';
+
 import { getUserSelection } from '../../util/browser/getUserSelection';
 
 import { NoteMd } from './NoteMd';
@@ -14,6 +17,7 @@ import './NoteBlock.scss';
 
 export type NoteBlockProps = {
   path?: List<number>,
+  store: Store<NoteNav>,
   ast: NoteAst,
   setAst?: (ast: NoteAst) => void,
 };
@@ -21,17 +25,16 @@ export type NoteBlockProps = {
 type MouseEventDiv = react.MouseEvent<HTMLDivElement, MouseEvent>;
 
 
-export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
+export function NoteBlock({ path, store, ast, setAst }: NoteBlockProps) {
   const { hashValue, markdown, children } = ast;
 
   // Ensure current path is not undefined.
   path = path ? path : List();
 
-  const [isSelected] = useStore<NoteNav>(selectorIsSelected(path));
-  const [setSelected, navigate] = useActions<NoteNav>(
-    actionSetSelected, actionNavigate
-  )
-
+  const isSelected = fromStore(store, selectorIsSelected(path));
+  const setSelected = bindAction(store, actionSetSelected);
+  const navigate = bindAction(store, actionNavigate);
+  
   function setMarkdown(md: string): void {
     if (setAst)
       setAst(updateHash({ markdown: md, children }));
@@ -75,6 +78,7 @@ export function NoteBlock({ path, ast, setAst }: NoteBlockProps) {
       <NoteBlock
         key={child.hashValue} 
         path={path.push(idx)}
+        store={store}
         ast={child}
         setAst={setChildAst(idx)}
       />
