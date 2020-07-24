@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { List } from 'immutable';
 
 import { Store } from '../../store/Store';
@@ -11,21 +11,6 @@ import { NoteFile } from './NoteFile';
 
 import './Notebook.scss';
 
-export type NavButtonProps = {
-  name: string,
-  onClick?: () => void,
-};
-
-function NavButton({ name, onClick }: NavButtonProps) {
-  return <button 
-    key={name} 
-    className='NavButton'
-    onClick={onClick}>
-
-      {name}
-  </button>
-}
-
 const META_PAGES: List<string> = List([
   'Diary', 
   'Stats',
@@ -33,22 +18,31 @@ const META_PAGES: List<string> = List([
   'Index'
 ]);
 
-export function Notebook({ store }: { store: Store<NotebookStore> }) {
+type NavButtonProps = {
+  name: string,
+  store: Store<NotebookStore>,
+};
+
+function NavButton({ name, store }: NavButtonProps) {
+  const doSetOpenFile = bindAction(store, setOpenFile);
+
+  return <button 
+    key={name} 
+    className='NavButton'
+    onClick={() => doSetOpenFile(name)}>
+
+      {name}
+  </button>;
+}
+
+export type NotebookProps = {
+  store: Store<NotebookStore>
+};
+
+export function Notebook({ store }: NotebookProps) {
 
   const { pinned, history } = store.state;
   const filename = fromStore(store, getTargetFilename);
-  const doSetOpenFile = bindAction(store, setOpenFile);
-
-  const navButton = useMemo(
-    () => (name: string) => 
-      <NavButton
-        key={name} 
-        name={name} 
-        onClick={() => doSetOpenFile(name)}
-      />,
-  
-    [ doSetOpenFile ]
-  );
   
   return <AdjustableWidthColumns 
     className='Notebook'
@@ -56,13 +50,13 @@ export function Notebook({ store }: { store: Store<NotebookStore> }) {
 
     left={<div className='Navigator'>
       <span>Project</span>
-      {META_PAGES.map(navButton)}
+      {META_PAGES.map(name => <NavButton {...{name, store}}/>)}
 
       <hr/><span>Pinned</span>
-      {pinned.map(navButton)}
+      {pinned.map(name => <NavButton {...{name, store}}/>)}
 
       <hr/><span>Recent</span>
-      {history.map(navButton)}
+      {history.map(name => <NavButton {...{name, store}}/>)}
     </div>}
 
     right={

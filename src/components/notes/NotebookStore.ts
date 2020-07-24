@@ -1,5 +1,5 @@
 
-import { Map, OrderedSet, List } from 'immutable';
+import { Map, OrderedSet } from 'immutable';
 
 import { Action } from '../../store/Actions';
 

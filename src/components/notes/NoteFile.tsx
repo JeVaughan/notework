@@ -13,7 +13,11 @@ import { NoteFileHeader } from './NoteFileHeader';
 
 import './NoteFile.scss';
 
-export function NoteFile({ store }: { store: Store<NotebookStore> }) {
+export type NoteFileProps = {
+  store: Store<NotebookStore>
+};
+
+export function NoteFile({ store }: NoteFileProps) {
   const navStore = useStore<NoteNav>({});
 
   const ast = fromStore(store, getFilebody);
