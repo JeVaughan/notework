@@ -44,11 +44,17 @@ const debugBacklinks: Backlink[] = [
 
 export function debugNoteStore(_: string): NoteEditorSource {
   function noteEditorSrc(filename: string): Store<NoteEditor> {
+    console.assert(
+      TEST_NOTEBOOK.has(filename), 
+      `TEST_NOTEBOOK is missing a page called "${filename}".`
+    );
+
     const state = {
       filename,
+      backlinks: debugBacklinks,
       content: TEST_NOTEBOOK.get(filename),
-      backlinks: debugBacklinks
     };
+
     return store(
       state, (action: Action<NoteEditor>) => {
         const { content } = action(state);

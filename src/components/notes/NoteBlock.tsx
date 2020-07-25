@@ -74,14 +74,15 @@ export function NoteBlock({ path, store, ast, setAst }: NoteBlockProps) {
 
   // Recurse down children in AST.
   const cListItems = children && children.size && <ul className="NoteBlock">{
-    children.map((child, idx) =>
-      <NoteBlock
-        key={child.hashValue} 
-        path={path.push(idx)}
-        store={store}
-        ast={child}
-        setAst={setChildAst(idx)}
-      />
+    children.map(
+      (child: NoteAst, index: number) =>
+        <NoteBlock
+          key={child.hashValue} 
+          path={path.push(index)}
+          store={store}
+          ast={child}
+          setAst={setChildAst(index)}
+        />
     )
   }</ul>;
 

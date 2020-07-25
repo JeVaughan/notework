@@ -11,7 +11,7 @@ import './App.scss';
 
 const DEBUG_NOTEBOOK: NotebookData = {
   ...EMPTY_HISTORY,
-  ...setPinned(true, 'note2')(EMPTY_PINS),
+  ...setPinned(true, 'page2')(EMPTY_PINS),
   ...debugNoteStore('test'),
 }
 
