@@ -6,6 +6,9 @@ import { Action } from "../../../store/Actions";
 
 import { NoteAst, deserialise } from "../NoteAst";
 import { NoteEditor, NoteEditorSource, Backlink } from "./NoteEditor";
+import { NotebookData } from "../Notebook";
+import { EMPTY_HISTORY } from "./FileHistory";
+import { setPinned, EMPTY_PINS } from "./PinnedFiles";
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
 <nb>Bi-directional links like this [[page2]]</nb>
@@ -64,4 +67,10 @@ export function debugNoteStore(_: string): NoteEditorSource {
   }
 
   return { noteEditorSrc };
+}
+
+export const DEBUG_NOTEBOOK: NotebookData = {
+  ...EMPTY_HISTORY,
+  ...setPinned(true, 'page2')(EMPTY_PINS),
+  ...debugNoteStore('test'),
 }
