@@ -27,13 +27,16 @@ it('should parse a code node', () => {
 
 it('should parse a block node', () => {
   expect(markdown('my ```name``` luka')).toEqual([
-    'my ', { type: 'block', value: 'name' }, ' luka',
+    'my ', { type: 'codeblock', value: 'name' }, ' luka',
   ]);
 });
 
 it('should parse a ref node', () => {
   expect(markdown('my [[name]] luka')).toEqual([
-    'my ', { type: 'ref', value: 'name' }, ' luka',
+    'my ', { type: 'ref', value: { text: 'name', url: 'name' } }, ' luka',
+  ]);
+  expect(markdown('[[name]](luka)')).toEqual([
+    { type: 'ref', value: { text: 'name', url: 'luka' } }
   ]);
 });
 

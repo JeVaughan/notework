@@ -50,11 +50,11 @@ export const markdown = parseFn(
           markType('ref', 
             oneOf(
               thenMap(
-                wrap('[[', ']]'),
+                allOf(wrap('[[', ']]'), wrap('(', ')')), 
                 toLinkValue
               ),
               thenMap(
-                allOf(wrap('[[', ']]'), wrap('(', ')')), 
+                wrap('[[', ']]'),
                 toLinkValue
               )
             )
