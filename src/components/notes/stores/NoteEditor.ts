@@ -1,12 +1,7 @@
 import { Store } from "../../../store/Store";
 import { Action } from "../../../store/Actions";
-import { NoteAst } from "../NoteAst";
-
-export type Backlink = {
-  filename: string,
-  path: number[],
-  content: NoteAst,
-};
+import { NoteAst } from "../datatypes/NoteAst";
+import { Backlink } from "../datatypes/Backlink";
 
 export type NoteEditor = {
   filename: string,

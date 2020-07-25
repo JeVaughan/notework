@@ -1,5 +1,5 @@
 import { List } from "immutable";
-import { cyrb53 } from "../../util/cyrb53";
+import { cyrb53 } from "../../../util/cyrb53";
 
 export type NoteAst = {
   hashValue: number,

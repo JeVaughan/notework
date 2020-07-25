@@ -1,11 +1,13 @@
 
 import { Map } from "immutable";
 
-import { Store, store } from "../../../store/Store";
 import { Action } from "../../../store/Actions";
+import { Store, store } from "../../../store/Store";
+import { useStore } from "../../../store/useStore";
+import { NoteAst, deserialise } from "../datatypes/NoteAst";
+import { Backlink } from "../datatypes/Backlink";
 
-import { NoteAst, deserialise } from "../NoteAst";
-import { NoteEditor, NoteEditorSource, Backlink } from "./NoteEditor";
+import { NoteEditor, NoteEditorSource } from "./NoteEditor";
 import { NotebookData } from "../Notebook";
 import { EMPTY_HISTORY } from "./FileHistory";
 import { setPinned, EMPTY_PINS } from "./PinnedFiles";
@@ -45,7 +47,7 @@ const debugBacklinks: Backlink[] = [
   { filename: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
 ];
 
-export function debugNoteStore(_: string): NoteEditorSource {
+export function debugNoteSource(_: string): NoteEditorSource {
   function noteEditorSrc(filename: string): Store<NoteEditor> {
     console.assert(
       TEST_NOTEBOOK.has(filename), 
@@ -69,8 +71,10 @@ export function debugNoteStore(_: string): NoteEditorSource {
   return { noteEditorSrc };
 }
 
-export const DEBUG_NOTEBOOK: NotebookData = {
-  ...EMPTY_HISTORY,
-  ...setPinned(true, 'page2')(EMPTY_PINS),
-  ...debugNoteStore('test'),
+export function debugNotebookStore(): Store<NotebookData> {
+  return useStore({ 
+    ...EMPTY_HISTORY,
+    ...setPinned(true, 'page2')(EMPTY_PINS),
+    ...debugNoteSource('test'),
+  });
 }

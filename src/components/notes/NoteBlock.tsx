@@ -9,7 +9,7 @@ import { bindAction } from '../../store/bindAction';
 import { getUserSelection } from '../../util/browser/getUserSelection';
 
 import { NoteMd } from './NoteMd';
-import { NoteAst, updateHash } from './NoteAst';
+import { NoteAst, updateHash } from './datatypes/NoteAst';
 import { NoteEditor } from './NoteEditor';
 import { NoteNav, selectorIsSelected, actionSetSelected, actionNavigate } from './NoteNav';
 

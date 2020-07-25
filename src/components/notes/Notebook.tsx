@@ -17,7 +17,7 @@ import './Notebook.scss';
 export type NotebookData =
   FileHistory &
   PinnedFiles &
-  NoteEditorSource
+  NoteEditorSource;
 
 const META_PAGES: List<string> = List([
   'Diary', 
