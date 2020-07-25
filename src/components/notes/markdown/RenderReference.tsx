@@ -1,7 +1,5 @@
 import React from "react";
 
-import { setOpenFile } from "../NotebookStore";
-
 import './RenderReference.scss';
 
 export function Reference({ node }: any) {
