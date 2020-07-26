@@ -3,8 +3,9 @@ import { Action } from "../../../store/Actions";
 import { Store, store } from "../../../store/Store";
 import { useStore } from "../../../store/useStore";
 
-import { NoteAst, deserialise } from "../NoteAst";
-import { NoteEditor, NoteEditorSource, Backlink } from "./NoteEditor";
+import { NoteAst, deserialise } from "../datatypes/NoteAst";
+import { Backlink, getNoteBacklinks } from "../datatypes/Backlink";
+import { NoteEditor, NoteEditorSource } from "./NoteEditor";
 import { NotebookData } from "../Notebook";
 import { EMPTY_HISTORY } from "./FileHistory";
 import { setPinned, EMPTY_PINS } from "./PinnedFiles";

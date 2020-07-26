@@ -41,7 +41,7 @@ console.assert(typeof page3 == 'object', 'Correctly parsed page3');
 
 var TEST_NOTEBOOK = Map<NoteAst>({ page1, page2, page3 });
 
-const debugBacklinks: Backlink[] = [
+export const DEBUG_BACKLINKS: Backlink[] = [
   { filename: 'page1', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
   { filename: 'page2', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
   { filename: 'page3', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
@@ -57,7 +57,7 @@ export function debugNoteSource(_: string): NoteEditorSource {
 
     const state = {
       filename,
-      backlinks: debugBacklinks,
+      backlinks: DEBUG_BACKLINKS,
       content: TEST_NOTEBOOK.get(filename),
     };
 

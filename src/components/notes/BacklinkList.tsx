@@ -3,24 +3,16 @@ import React, { useState } from 'react';
 import { Store } from '../../store/Store';
 
 import { NoteNav } from './NoteNav';
-import { deserialise } from './NoteAst';
-import { Backlink } from './stores/NoteEditor';
+import { DEBUG_BACKLINKS } from './stores/debugNoteStore';
+import { Backlink } from './datatypes/Backlink';
 import { BacklinkView, backlinkKey } from './BacklinkView';
 
 import './BacklinkList.scss';
 
-
-const debugBacklinks: Backlink[] = [
-  { filename: 'page1', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page2', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page3', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-]
-
 export function BacklinkList(
   { store }: { store: Store<NoteNav> }
 ) {
-  const backlinks = debugBacklinks;
+  const backlinks: Backlink[] = DEBUG_BACKLINKS; 
 
   const [collapsed, setCollapsed] = useState(false);
 
