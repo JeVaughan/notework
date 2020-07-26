@@ -1,6 +1,9 @@
-import { Map, List } from "immutable";
+
 import { markdown, MdNode } from "../markdown/parseMarkdown";
-import { flatten } from "../../../util/collections/flatten";
+import { flatMap } from "../../../util/collections/flatMap";
+import { tuple } from "../../../util/collections/tuple";
+import { map } from "../../../util/collections/map";
+import { groupBy } from "../../../util/collections/groupBy";
 
 import { NoteAst } from "./NoteAst";
 import { noteLeaves } from "./noteLeaves";
@@ -17,45 +20,27 @@ export function getNoteBacklinks(
   content: NoteAst | string
 ): Map<string, Backlink[]> {
 
-  function makeBacklinks([path, ast]: [BlockPath, NoteAst]) {
+  function makeBacklinks([path, ast]: [BlockPath, NoteAst]): [string, Backlink][] {
     function links(node: MdNode): [string, Backlink] {
       if (typeof node === 'object' && node.type == 'ref') {
         if (typeof node.value === 'object') {
           const { url, text } = node.value;
-          return [
+          return tuple(
             url, {
               filename: sourceName,
               path,
               content: ast
             }
-          ]
+          );
         }
       }
     }  
     
-    return ast.markdown ? 
-      flatMap(markdown(ast.markdown), links) :
-      
+    return ast.markdown ? map(markdown(ast.markdown), links) : [];
   }
-
-  const allMarkdown: [BlockPath, MdNode][] 
-    = List(
-      flatten(
-        noteLeaves(content).flatMap(
-          ([ path, md ]) => 
-            markdown(md).map(node => [])
-        )
-      )
-    );
-  
-  allMarkdown.filter(
-    function(node: MdNode): [string, Backlink] {
-      if (typeof node === 'object' && node.type == 'ref') {
-        if (typeof node.value === 'object') {
-          const { url, text } = node.value;
-          return [url, node]
-        }
-      }
-    }
-  )
+  return groupBy(
+    flatMap(noteLeaves(content), makeBacklinks), 
+    ([ targetName, _ ]) => targetName,
+    ([ _, backlink ]) => backlink
+  );
 }

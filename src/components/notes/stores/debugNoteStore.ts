@@ -11,6 +11,7 @@ import { NoteEditor, NoteEditorSource } from "./NoteEditor";
 import { NotebookData } from "../Notebook";
 import { EMPTY_HISTORY } from "./FileHistory";
 import { setPinned, EMPTY_PINS } from "./PinnedFiles";
+import { EMPTY_BLOCK_PATH } from "../datatypes/BlockPath";
 
 const page1: NoteAst = deserialise(`<nb><nb>Changes are automatically rendered as you type.</nb>
 <nb>Bi-directional links like this [[page2]]</nb>
@@ -41,10 +42,10 @@ console.assert(typeof page3 == 'object', 'Correctly parsed page3');
 var TEST_NOTEBOOK = Map<NoteAst>({ page1, page2, page3 });
 
 const debugBacklinks: Backlink[] = [
-  { filename: 'page1', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page2', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page3', path: [], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
-  { filename: 'page3', path: [1], content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page1', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page2', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page3', path: EMPTY_BLOCK_PATH, content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
+  { filename: 'page3', path: EMPTY_BLOCK_PATH.push(1), content: deserialise('<nb>Test backlink [[unknown page]]</nb>') },
 ];
 
 export function debugNoteSource(_: string): NoteEditorSource {

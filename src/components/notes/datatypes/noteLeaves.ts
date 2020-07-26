@@ -1,23 +1,23 @@
-import { List } from "immutable";
 import { tuple } from "../../../util/collections/tuple";
+import { map } from "../../../util/collections/map";
 
 import { NoteAst, deserialise } from "./NoteAst";
 import { BlockPath, EMPTY_BLOCK_PATH } from "./BlockPath";
 
-function noteLeavesImpl(path: BlockPath, content: NoteAst): List<[BlockPath, NoteAst]> {
+function noteLeavesImpl(path: BlockPath, content: NoteAst): [BlockPath, NoteAst][] {
   const { children } = content;
 
-  function childLeaves(ast: NoteAst, index: number): List<[BlockPath, NoteAst]> {
+  function childLeaves(ast: NoteAst, index: number): [BlockPath, NoteAst][] {
     return noteLeavesImpl(path.push(index), ast);
   }
 
-  const head = List([ tuple(path, content) ]);
+  const head = [ tuple(path, content) ];
   return children ? 
-    head.concat(...children.map(childLeaves).toArray()) :
+    head.concat(...map(children, childLeaves)) :
     head;
 }
 
-export function noteLeaves(content: NoteAst | string): List<[BlockPath, NoteAst]> {
+export function noteLeaves(content: NoteAst | string): [BlockPath, NoteAst][] {
   return noteLeavesImpl(
     EMPTY_BLOCK_PATH, 
     typeof content == 'string' ?
