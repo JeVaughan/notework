@@ -4,6 +4,7 @@ import { flatMap } from "../../../util/collections/flatMap";
 import { tuple } from "../../../util/collections/tuple";
 import { map } from "../../../util/collections/map";
 import { groupBy } from "../../../util/collections/groupBy";
+import { identity } from "../../../util/identity";
 
 import { NoteAst } from "./NoteAst";
 import { noteLeaves } from "./noteLeaves";
@@ -40,7 +41,6 @@ export function getNoteBacklinks(
   }
   return groupBy(
     flatMap(noteLeaves(content), makeBacklinks), 
-    ([ targetName, _ ]) => targetName,
-    ([ _, backlink ]) => backlink
+    identity
   );
 }

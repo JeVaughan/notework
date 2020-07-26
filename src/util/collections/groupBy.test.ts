@@ -10,6 +10,6 @@ it('should group by the specified keys.', () => {
   correctResult.set("1", [1, 4, 7]);
   correctResult.set("2", [2, 5, 8]);
 
-  expect(groupBy(range(9), i => writeJson(i % 3), identity))
+  expect(groupBy(range(9), i => [writeJson(i % 3), i]))
     .toEqual(correctResult);
 });
