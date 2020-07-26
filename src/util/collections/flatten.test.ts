@@ -1,5 +1,5 @@
 
-import flatten from './flatten';
+import { flatten } from './flatten';
 
 it('should correctly flatten arrays', () => {
 
