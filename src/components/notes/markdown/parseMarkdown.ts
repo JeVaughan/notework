@@ -1,4 +1,4 @@
-import flatten from "../../../util/collections/flatten";
+import { flatten } from "../../../util/collections/flatten";
 import { filter } from "../../../util/collections/filter";
 
 import { 
