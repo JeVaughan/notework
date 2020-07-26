@@ -1,5 +1,5 @@
 import { NoteAst, deserialise, serialise } from "./NoteAst";
-import { cyrb53 } from "../../util/cyrb53";
+import { cyrb53 } from "../../../util/cyrb53";
 import { List } from "immutable";
 
 const emptyXml: string = "<nb/>";
