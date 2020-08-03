@@ -1,8 +1,11 @@
 import { Action } from './Actions';
 
+export type Reducer<S> = 
+  (action: Action<S>) => void;
+
 export interface Store<S> {
   readonly state: S;
-  reducer(action: Action<S>): void;
+  readonly reducer: Reducer<S>;
 };
 
 export function store<S>(

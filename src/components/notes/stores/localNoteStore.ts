@@ -13,23 +13,7 @@ import { setPinned, EMPTY_PINS } from "./PinnedFiles";
 
 export function localNoteSource(_: string): NoteEditorSource {
   function noteEditorSrc(filename: string): Store<NoteEditor> {
-    console.assert(
-      TEST_NOTEBOOK.has(filename), 
-      `TEST_NOTEBOOK is missing a page called "${filename}".`
-    );
-
-    const state = {
-      filename,
-      backlinks: debugBacklinks,
-      content: TEST_NOTEBOOK.get(filename),
-    };
-
-    return store(
-      state, (action: Action<NoteEditor>) => {
-        const { content } = action(state);
-        TEST_NOTEBOOK = TEST_NOTEBOOK.set(filename, content);
-      }
-    );
+    
   }
 
   return { noteEditorSrc };
