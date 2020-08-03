@@ -75,7 +75,7 @@ export function debugNoteSource(_: string): NoteEditorSource {
 export function debugNotebookStore(): Store<NotebookData> {
   return useStore({ 
     ...EMPTY_HISTORY,
-    ...setPinned(true, 'page2')(EMPTY_PINS),
+    ...setPinned(true, 'page1')(EMPTY_PINS),
     ...debugNoteSource('test'),
   });
 }
