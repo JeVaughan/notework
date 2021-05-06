@@ -1,4 +1,4 @@
-import { Store } from "../../../store/Store";
+import { StoreBinding } from "../../../store/useStore";
 import { Action } from "../../../store/Actions";
 import { NoteAst } from "../datatypes/NoteAst";
 import { Backlink } from "../datatypes/Backlink";
@@ -10,7 +10,7 @@ export type NoteEditor = {
 };
 
 export type NoteEditorSource = {
-  noteEditorSrc: (filename: string) => Store<NoteEditor>,
+  noteEditorSrc: (filename: string) => StoreBinding<NoteEditor>,
 };
 
 export function getContent(store: NoteEditor): NoteAst { 

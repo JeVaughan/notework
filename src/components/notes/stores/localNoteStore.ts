@@ -1,7 +1,7 @@
 
 import { Action } from "../../../store/Actions";
 import { Store, store } from "../../../store/Store";
-import { useStore } from "../../../store/useStore";
+import { useStore, StoreBinding } from "../../../store/useStore";
 
 import { NoteAst, deserialise } from "../datatypes/NoteAst";
 import { Backlink, getNoteBacklinks } from "../datatypes/Backlink";
@@ -12,7 +12,7 @@ import { setPinned, EMPTY_PINS } from "./PinnedFiles";
 
 
 export function localNoteSource(_: string): NoteEditorSource {
-  function noteEditorSrc(filename: string): Store<NoteEditor> {
+  function noteEditorSrc(filename: string): StoreBinding<NoteEditor> {
     
   }
 

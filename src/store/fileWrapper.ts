@@ -1,32 +1,41 @@
 
 import fs from 'fs';
+
+import { Json, writeJson, parseJson } from '../util/json';
+import { identity } from '../util/identity';
+
 import { Reducer } from "./Store";
 import { Action } from "./Actions";
-import { StoreWrapper } from './StoreSpec';
-import { Json, writeJson, parseJson } from '../util/json';
+import { StoreBinding } from './useStore';
 
-export function fileWrapper(filepath: fs.PathLike): StoreWrapper<string | null> {
-  return function(reducer: Reducer<string | null>): Reducer<string | null> {
+export function fileStoreBinding<S>(
+  filepath: fs.PathLike,
+  serialiser: (state: S) => string,
+  deserialiser: (body: string | null) => S,
+): StoreBinding<S> {
+ 
+  return function(reducer: Reducer<S>): Reducer<S> {
     
     // Attempt to read the current file contents into the provided reducer.
     fs.readFile(
       filepath, { encoding: 'utf8', flag: 'r' }, 
       function(error: NodeJS.ErrnoException, content: string) {
         if (!error)
-          reducer(() => content);
+          reducer(() => deserialiser(content));
       }
     );
     
-    return function(action: Action<string | null>): void {
+    return function(action: Action<S>): void {
       fs.readFile(
         filepath, { encoding: 'utf8', flag: 'r' }, 
         function(error: NodeJS.ErrnoException, content: string) {
           if (!error) {
-            const contentToWrite = action(content);
+            const contentToWrite = 
+              action(deserialiser(content));
             
             fs.writeFile(
               filepath, { encoding: 'utf8', flag: 'w' },
-              contentToWrite,
+              serialiser(contentToWrite),
               () => reducer(() => contentToWrite)
             )
           }
@@ -36,28 +45,10 @@ export function fileWrapper(filepath: fs.PathLike): StoreWrapper<string | null> 
   }
 }
 
-export function jsonFileWrapper<T extends Json>(filepath: fs.PathLike): StoreWrapper<T> {
-  const baseWrapper: StoreWrapper<string | null> = fileWrapper(filepath);
+export function rawFileBinding(filepath: fs.PathLike): StoreBinding<string | null> {
+  return fileStoreBinding(filepath, identity, identity);
+}
 
-
-  return function(baseReducer: Reducer<T>): Reducer<T> {
-    const fileReducer: Reducer<string | null> = baseWrapper(
-      
-      function(action: Action<string>): void {
-        function fileAction(jsonContent: T): T {
-          return parseJson(action(writeJson(jsonContent)));
-        }
-        baseReducer(fileAction);
-      }
-    );
-
-    return function(action: Action<T>): void {
-
-      function fileAction(rawContent: string): string {
-        return writeJson(action(parseJson(rawContent)));
-      }
-
-      fileReducer(fileAction);
-    }
-  }
+export function jsonFileWrapper<T extends Json>(filepath: fs.PathLike): StoreBinding<T> {
+  return fileStoreBinding(filepath, writeJson, parseJson);
 }

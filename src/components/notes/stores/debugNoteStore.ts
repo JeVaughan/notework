@@ -2,8 +2,8 @@
 import { Map } from "immutable";
 
 import { Action } from "../../../store/Actions";
-import { Store, store } from "../../../store/Store";
-import { useStore } from "../../../store/useStore";
+import { Store, store, Reducer } from "../../../store/Store";
+import { useStore, StoreBinding } from "../../../store/useStore";
 import { NoteAst, deserialise } from "../datatypes/NoteAst";
 import { Backlink } from "../datatypes/Backlink";
 
@@ -49,24 +49,27 @@ export const DEBUG_BACKLINKS: Backlink[] = [
 ];
 
 export function debugNoteSource(_: string): NoteEditorSource {
-  function noteEditorSrc(filename: string): Store<NoteEditor> {
+  function noteEditorSrc(filename: string): StoreBinding<NoteEditor> {
     console.assert(
       TEST_NOTEBOOK.has(filename), 
       `TEST_NOTEBOOK is missing a page called "${filename}".`
     );
 
-    const state = {
-      filename,
-      backlinks: DEBUG_BACKLINKS,
-      content: TEST_NOTEBOOK.get(filename),
-    };
+    return function(reducer: Reducer<NoteEditor>): Reducer<NoteEditor> {
+      var state = {
+        filename,
+        backlinks: DEBUG_BACKLINKS,
+        content: TEST_NOTEBOOK.get(filename),
+      };
 
-    return store(
-      state, (action: Action<NoteEditor>) => {
-        const { content } = action(state);
-        TEST_NOTEBOOK = TEST_NOTEBOOK.set(filename, content);
+      reducer(() => state);
+
+      return function(action: Action<NoteEditor>): void {
+        state = action(state);
+        reducer(() => state);
+        TEST_NOTEBOOK = TEST_NOTEBOOK.set(filename, state.content);
       }
-    );
+    }
   }
 
   return { noteEditorSrc };
@@ -75,7 +78,7 @@ export function debugNoteSource(_: string): NoteEditorSource {
 export function debugNotebookStore(): Store<NotebookData> {
   return useStore({ 
     ...EMPTY_HISTORY,
-    ...setPinned(true, 'page1')(EMPTY_PINS),
+    ...setPinned(true, 'page2')(EMPTY_PINS),
     ...debugNoteSource('test'),
   });
 }
